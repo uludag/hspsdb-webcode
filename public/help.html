@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HSPs-db: help page</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"></script>    
+    <script type="text/javascript" src="js/docready_es.js"></script>
+</head>
+<body>
+    
+    <h1>How to index your BLAST results</h1>
+        
+    <p>If you decide to index your BLAST results you can use scripts
+        provided by the 
+        <a href="todo">hspsdb-indexer</a> project.
+        Source code of this website is maintained by the
+        <a href="todo">hspsdb-webcode</a> project that
+        would be used to build similar websites for indexed BLAST results.
+    </p>
+        
+    <h1>Import your BLAST results into this website/database</h1>
+    <form id="ncbiimport">
+        <div class="row">
+            Import results from NCBI BLAST server:
+            <input id="ncbijobid" title=
+                   "Enter here job-id of your NCBI BLAST searches to import the search results
+                   to the Elasticsearch server this website is connected to.
+                   ">
+            <button id="import" type="submit"
+                    >Import</button>
+        </div>
+        <p id='msg'></p>
+    </form>
+        
+        
+    <h1>TODO</h1>
+    <ul>
+        <li>kmers in ncbiblast results</li>
+        <li>search suggestions</li>
+        <li>script to index new ncbiblast results</li>
+        <li>given NCBI job ids index relevant ncbiblast results</li>
+        <li>Form for importing json outputs and link for import scripts
+    </ul>
+</body>
+</html>

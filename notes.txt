@@ -1,0 +1,40 @@
+
+TODO:
+=====
+
+- Pivot-table view, can we add more dimensions?
+  Dynamic selection of default rows and columns
+
+- If the import is successful, take the user directly to view it (Tanvir)
+
+- Pivot table colors, higher scores should have stronger colors
+
+- List selected filters together with options to remove them (as in FARNA)
+
+- Should be possible to generate a sample database by a script that should
+  run a set of searches on NCBI and EBI BLAST servers?
+
+- Visual output similar to EBI result pages? sequence/subject match
+
+- New form for importing json/xml output files
+
+- link for import scripts
+
+- Repeat or Run BLAST searches on EBI/NCBI??
+
+- Should we have separate tabs for aggregation results and query results?
+
+- No need to retrieve sequences/alignments when constructing the Kablammo view
+
+- Is it possible not to retrieve HSPs list in the first query
+
+- Taxonomy reports as in NCBI TaxBLAST reports (Tanvir)
+
+- Circos views using 'nicgirault/circosJs'
+
+
+Notes for developers:
+======
+
+When changing active view;
+   class 'active' need to be set for the tab div as well as the content div

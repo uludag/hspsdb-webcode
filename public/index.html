@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HSPs-db: Database for NCBI BLAST search results</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.tablesorter.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ts.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/pivot.css"/>
+    <link rel="stylesheet" type="text/css" href="css/c3.css"/>
+    <link rel="stylesheet" href="js/lib/kablammo/css/kablammo.css">
+    <link rel="stylesheet" href="js/lib/kablammo/css/svg.css">
+    <script src="js/mainaggquery.js"></script>
+    <script type="text/javascript" src="js/query_es.js"></script>
+    <script type="text/javascript" src="js/displayQueryResults_es.js"></script>
+    <script type="text/javascript" src="js/attribute-filters_es.js"></script>
+    <script type="text/javascript" src="js/entry.js"></script>
+    <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/es_search.js"></script>
+    <script src="js/lib/highcharts.js"></script>
+    <script src="js/lib/pivot.js"></script>
+    <script src="js/lib/d3.min.js"></script>
+    <script src="js/lib/c3.js"></script>
+    <script src="js/lib/c3_renderers.js"></script>
+    <script src="js/pivottable.js"></script>
+    <script src="js/lib/kablammo/js/graph.js"></script>
+    <script src="js/lib/kablammo/js/grapher.js"></script>
+    <script src="js/kview.js"></script>
+
+    <script type="text/javascript" src="js/docready_es.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h4>HSPs-db - Database for sequence similarity search results</h4>
+        <div class="row">
+            <div class="col-sm-8">
+                <p>HSPs-db project aims developing data mining interfaces
+                    and indexing tools for
+                    <a href='http://www.ncbi.nlm.nih.gov/'>NCBI</a>-<a
+                        href='https://en.wikipedia.org/wiki/BLAST'>BLAST</a>
+                    search results.
+                    Current web site you are reading this note
+                    is linked to an Elasticsearch database
+                    that contains sample BLAST results that were indexed
+                    by the scripts we have developed.</p><p>
+                    <a href="help.html">Help</a> page includes information for
+                    indexing BLAST results and installing this web interface
+                    for such indexed BLAST results.
+                </p>
+
+            </div>
+            <div class="col-sm-4">
+                <form id="query-form" role="search">
+                    <div class="row">
+                        <input id="q" autocomplete="off"
+                               type="text"
+                               value="*"
+                               placeholder="search terms and/or identifiers">
+                        <button id="run" type="submit"
+                            class="btn btn-default">Search</button>
+                    </div>
+                    <div class="row">
+                        e-value filter:
+                        <input id="emax" style="margin-right: 6px;"
+                               title=
+                               "Filter sequence/entry matches by their e-values"
+                               value="100" size="6">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="content">
+
+            <div id="searchresults" class="container-fluid"
+                 style="font-family: Calibri; font-size: medium;">
+
+                <div class="row">
+
+                    <div class="col-sm-8">
+                        <p id="nresults" style="color: #f77709;">
+                            Enter your query above in the search box to see the list of matching
+                            ncbi-blast results.
+                        </p>
+                        <p id="notifications">
+                        </p>
+                    </div>
+
+                    <div id="filters" class="col-sm-4"
+                         style="font-size:small; font-weight: 600;">
+                        <div id='atf'></div>
+
+                        <br>
+
+
+                    </div>
+
+                </div>
+
+
+                <!--div id="navigation" style="float: none; padding-left: 0.2em;">
+                            Displaying <input id="rows" size="2" value="1"
+                                              style="text-align: right;"
+                                                type="text">
+                            search-results,
+                            starting from result&nbsp;<input id="startfrom" size="2" value="1"
+                                                     style="text-align: right;"
+                                  type="text">&nbsp;
+                <button
+                                title="display previous set of results (if any)"
+                    onclick="prevresults();">prev results</button>
+                <button
+                                title="display next set of results (if any)"
+                        onclick="nextresults();">next results</button-->
+
+                <!--
+                query filter
+                <input id="queryfilter" title=
+                       'select to see the results that match the query only,
+                       unselect to see all fields of the entries'
+                       type='checkbox' checked='checked'>
+
+
+
+                <button style="float: right; margin-right: 1em; margin-top: 4px;"
+                        title="expand/collapse annotations of all entries"
+                        onclick="toggleAnnotations();">+/- (all entries)</button>
+                -->
+                <!--div>
+
+                <div id="alertph"></div-->
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation"  class="active">
+                        <a href="#overview" aria-controls="overview" role="tab"
+                           title=
+"List of ncbi-blast results found, aggregation results on various attributes"
+                           id="overviewtab"
+                           data-toggle="tab">Query Results</a>
+                    </li>
+                    <li role="presentation" id="ssview">
+                        <a href="#sequenceservercont"
+                           aria-controls="sequenceservercont"
+                           role="tab"
+                           data-toggle="tab">Kablammo view</a>
+                    </li>
+                    <li role="presentation" id="pivottabletab" >
+                        <a href="#pivottablecont"
+                           aria-controls="pivottablecont"
+                           role="tab"
+                           data-toggle="tab">Pivot-table view</a>
+                    </li>
+                    <li role="presentation" id="scattercharttab" >
+                        <a href="#scatterchartcont"
+                           aria-controls="scatterchartcont"
+                           role="tab"
+                           data-toggle="tab">Scatter-chart view</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="tabcontents">
+
+                    <div id="overview" role="tabpanel" class="tab-pane active row">
+                                                <em style="color: #672e2e">
+                                                    Query-Results view is under development,
+                        current version displays only the first 10 entries in the query results.
+                        We will here have navigation options to select other entries,
+                        where an entry means an NCBI-BLAST search result.</em>
+
+                        <div class="col-md-8" id="maincontent">
+                            <div id="tablescontainer" class="container-fluid">
+
+                                <!--table id="rs" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="textcol" colspan=2>
+                                                Sequence/entry matched</th>
+                                            <th class="numcol"
+                                                style="min-width: 4em;">Query/match lengths</th>
+                                            <th class="numcol"
+                                                style="min-width: 2em;">#HSPs</th>
+                                            <th class="numcol"
+                                                style="min-width: 2em;">Max score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablerows">
+
+                                    </tbody>
+                                </table-->
+                            </div>
+                        </div>
+
+                        <div id="leftcontent" class="col-md-4">
+                            <h3>Aggregation results:</h3>
+                            <ul id="attrfilters"
+        style="padding-left:0.4em;padding-right:0.8em;list-style:outside none none;">
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div id="fulltissueexpressiongraphcont" role="tabpanel"
+                         class="tab-pane row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Tissue expression graph:
+                                </div>
+                                <div class="col-xs-6">
+                                    <input id="sortby_tissue" title='Sort Y axis by name'
+                                           type='checkbox' checked='checked'>Sort samples by name
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="fulltissueexpressiongraph">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="pivottablecont" role="tabpanel"
+                         class="tab-pane row">
+                        <p id="ptheader"></p>
+                        <div id="pttable">
+                        </div>
+                    </div>
+
+                    <div id="scatterchartcont" role="tabpanel"
+                         class="tab-pane row">
+
+                        <script type="text/javascript">
+                        </script>
+                        <div id="output" style="margin: 30px; display: inline-block"></div>
+                    </div>
+
+                    <div id="sequenceservercont" role="tabpanel"
+                         class="tab-pane row">
+                        <em style="color: #672e2e">Kablammo view is under development,
+                        current version displays only the first entry in the query results.
+                        We will here have links or tabs to select other entries,
+                        where an entry means an NCBI-BLAST search result.</em>
+                        <div id="parent" class="subject">
+                            <div id="svgContainer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div id="footer">
+            <hr/>
+            <div style="margin-left: 2em;">
+                <p style="margin-bottom: 2px;">
+                    Copyright &COPY;
+                    King Abdullah University of Science and Technology
+                    (<a href="http://www.kaust.edu.sa/">KAUST</a>) 2016.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
