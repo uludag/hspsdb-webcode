@@ -2,6 +2,10 @@
 TODO Roadmap mix:
 ================
 
+- We do queries in result level, i.e. whether a whole BLAST result match the query.
+  We should however apply the filters and query terms to the inner elements
+ (hits/hsps) and should return matching parts of the results rather than whole.
+
 - Pivot-table view; can we add more dimensions?
   Dynamic selection of default rows and columns
   Heatmap; higher scores should have stronger colors
