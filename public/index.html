@@ -167,13 +167,16 @@
                 <div class="tab-content" id="tabcontents">
 
                     <div id="overview" role="tabpanel" class="tab-pane active row">
-                                                <em style="color: #672e2e">
-                                                    Query-Results view is under development,
-                        current version displays only the first 10 entries in the query results.
-                        We will here have navigation options to select other entries,
-                        where an entry means an NCBI-BLAST search result.</em>
-
-                        <div class="col-md-8" id="maincontent">
+                    <em style="color: #672e2e; font-size: 12px;">
+                    Query-Results view is under development,
+                    current version displays only the first 10 entries in the query results.
+                    We will here have navigation options to select other entries,
+                    where an entry means an NCBI-BLAST search result.
+                    We also encourage users to narrow search results
+                    using the attribute filters provided based on the aggregation query
+                    results.
+                    </em>
+                        <div class="col-md-7" id="maincontent">
                             <div id="tablescontainer" class="container-fluid">
 
                                 <!--table id="rs" style="width: 100%;">
@@ -196,7 +199,7 @@
                             </div>
                         </div>
 
-                        <div id="leftcontent" class="col-md-4">
+                        <div id="leftcontent" class="col-md-5">
                             <h3>Aggregation results:</h3>
                             <ul id="attrfilters"
         style="padding-left:0.4em;padding-right:0.8em;list-style:outside none none;">
@@ -241,7 +244,8 @@
 
                     <div id="sequenceservercont" role="tabpanel"
                          class="tab-pane row">
-                        <em style="color: #672e2e">Kablammo view is under development,
+                        <em style="color: #672e2e; font-size: 12px;">
+                        Kablammo view is under development,
                         current version displays only the first entry in the query results.
                         We will here have links or tabs to select other entries,
                         where an entry means an NCBI-BLAST search result.</em>
