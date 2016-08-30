@@ -1,11 +1,11 @@
 # HSPs-db
 
-HSPs-db project aims developing tools for indexing NCBI BLAST sequence similarity
+HSPs-db project aims developing tools for indexing NCBI-BLAST sequence similarity
 search results, together with data mining interfaces.
 
-Everyday researchers all over the world runs millions of NCBI BLAST
+Everyday researchers all over the world run millions of BLAST
 searches; aim here is to prepare tools to make more sense of these search results.
-Latest version of the NCBI-BLAST software have improved outputs (xml2 project)
+Latest version of the BLAST software have improved outputs (xml2 project)
 which makes our task easier.
 
 We use Elasticsearch for indexing and storing BLAST results.
