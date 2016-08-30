@@ -1,40 +1,33 @@
 
-TODO:
-=====
+TODO Roadmap mix:
+================
 
-- Pivot-table view, can we add more dimensions?
+- Pivot-table view; can we add more dimensions?
   Dynamic selection of default rows and columns
+  Heatmap; higher scores should have stronger colors
 
-- If the import is successful, take the user directly to view it (Tanvir)
-
-- Pivot table colors, higher scores should have stronger colors
+- When NCBI result import is successful, take the user directly to view it (Tanvir)
 
 - List selected filters together with options to remove them (as in FARNA)
+  Add more filters, hit-length, identities, maybe for all numeric attributes
 
 - Should be possible to generate a sample database by a script that should
-  run a set of searches on NCBI and EBI BLAST servers?
+  run a set of searches on EMBL-EBI and NCBI BLAST servers?
 
-- Visual output similar to EBI result pages? sequence/subject match
+- Visual output similar to EBI SSS result pages? sequence/subject match
 
 - New form for importing json/xml output files
 
-- link for import scripts
+- Link for import scripts (indexer project)
 
-- Repeat or Run BLAST searches on EBI/NCBI??
+- Repeat/Run BLAST searches on EMBL-EBI/NCBI?
 
 - Should we have separate tabs for aggregation results and query results?
 
-- No need to retrieve sequences/alignments when constructing the Kablammo view
+- No need to retrieve sequences/alignments when constructing the Kablammo view?
 
-- Is it possible not to retrieve HSPs list in the first query
+- Is it possible not to retrieve HSPs list in the first query?
 
 - Taxonomy reports as in NCBI TaxBLAST reports (Tanvir)
 
-- Circos views using 'nicgirault/circosJs'
-
-
-Notes for developers:
-======
-
-When changing active view;
-   class 'active' need to be set for the tab div as well as the content div
+- Circos views using https://github.com/nicgirault/circosJS/
