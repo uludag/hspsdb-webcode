@@ -39,7 +39,7 @@ function displayQueryResults(result, nextprevq, query)
         $("#notifications").text("");
         $("#rows").val(esqhits.length);
 
-        result.hits.hits.forEach(reportOutputs);
+        result.hits.hits.forEach(displayBlastOutput2);
 
         if(nextprevq===undefined || nextprevq===false)
             update_facetcounts(query, aggs);
@@ -57,27 +57,35 @@ function displayQueryResults(result, nextprevq, query)
     return ptinput;
 };
 
-function outputsLine(id, r){
-    return "<p class='bresult'>"
+
+function blastOutput2sLine(id, r, nSearches) {
+    var r = "<p class='bresult'>"
         + "<a href='?q=_id:" + id + "'>" + id + "</a></p>"
         + "<p><b>Program</b>: " + r.program
-        + ",  <b>Database</b>: " + r.search_target.db + "</p>";
+        + ",  <b>Database</b>: " + r.search_target.db;
+    if(nSearches>1)
+        r += " (include " + nSearches + " searches)";
+    r += "</p>";
+    return r;
 }
 
-function reportOutputs(h) // each hit is one or more BlastOutput
+
+function displayBlastOutput2(h) // each hit is one or more BlastOutput2
 {
     var r;
     if(h._source.BlastOutput2[0] === undefined ){
         r = h._source.BlastOutput2.report;
-        $("#tablescontainer").append(outputsLine(h._id, r));
+        $("#tablescontainer").append(blastOutput2sLine(h._id, r, 1));
         reportOutput(h._source.BlastOutput2);
     }
     else {
         r = h._source.BlastOutput2[0].report;
-        $("#tablescontainer").append(outputsLine(h._id, r));
+        $("#tablescontainer").append(
+            blastOutput2sLine(h._id, r, h._source.BlastOutput2.length));
         h._source.BlastOutput2.forEach(reportOutput);
     }
 }
+
 
 function describeSearchResult(r){
     var b= "<p><b>Query</b>: " + r.results.search.query_title + "</p>"
