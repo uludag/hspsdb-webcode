@@ -2,7 +2,7 @@
 
 function executeEntryQueryUpdateKablammoView(id)
 {
-    var qurl = server + index + "/_search?";
+    var qurl = server + "_search?";
     var q = {
         "query": {"term": { "_id":  encodeURIComponent(id)}}};
     

@@ -148,7 +148,7 @@ function attrFilterQuerySubmit(q, a)
     //var fval = $(a).attr("fval");
     //addAttrFilterCheckbox(ffl, fval);
     // later addAttrFilter function adds attribute filter clauses
-    executeQueryDisplayResults(server, index, q, false);
+    executeQueryDisplayResults(server, q, false);
 }
 
 

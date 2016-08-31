@@ -2,17 +2,9 @@ var express = require('express');
 var router = express.Router();
 var restClient = require('node-rest-client').Client;
 var rclient = new restClient();
-
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
 var argv = require('minimist')(process.argv.slice(2));
 
 var es_server = (process.env.ES_SERVER || 'http://localhost:9200/');
-
 if (argv.es_server !== undefined)  es_server = argv.es_server;
 console.dir('es_server: ' + es_server);
 
@@ -27,34 +19,7 @@ var _index = "hspsdb-test";
 var _type = "xml2";
 
 
-router.get('/search', function (req, res)
-{
-    console.log("/search");
-    var query = req.query.q;
-
-    client.search({
-        requestTimeout: 60000,
-        index: _index,
-        type: _type,
-        body: {
-            "query": {
-                query_string:{
-                    default_field: "_all",
-                    default_operator: "AND",
-                    query: query
-                }
-            }
-        }
-    }).then(function (resp) {
-        res.json(resp);
-    }, function (err) {
-        console.trace(err.message);
-        res.render('search', {response: err.message});
-    });
-});
-
-
-router.post('/esr/'+_index+"/_search", function (req, res)
+router.post('/esr/_search', function (req, res)
 {
     var esreq = {
         index: _index,
@@ -74,27 +39,7 @@ router.post('/esr/'+_index+"/_search", function (req, res)
 });
 
 
-//MongoDB search request
-router.post('/mdbr/'+_index+"/_search", function (req, res)
-{
-    var qterm = req.body.query.bool.must[0].query_string.query;
-    console.log('/esr/'+_index+"/_search:"
-        +req.body.query.bool.must[0].query_string.query);
-
-
-    var esreq = {
-        index: _index,
-        //type: _type,
-        body: req.body,
-        size: (req.query.size!==undefined ? req.query.size : 5),
-        from: (req.query.from!==undefined ? req.query.from : 0)
-    };
-
-    mdb.querymongodb(qterm, res);
-});
-
-
-router.post('/esr/'+_index+"/_suggest", function (req, res)
+router.post('/esr/_suggest', function (req, res)
 {
 
     var esreq = {
@@ -121,7 +66,7 @@ router.get('/esr/ncbiimport', function (req, res)
 });
 
 
-function getResultRequest(jobid, format) {
+function retrieveNCBIResultRequest(jobid, format) {
     var req = "?"
         + 'RESULTS_FILE=on'
         + '&RID=' + jobid
@@ -134,11 +79,11 @@ function getResultRequest(jobid, format) {
 function ncbiimport(jobid, resulttype, httpResponse) {
     var url = 'https://blast.ncbi.nlm.nih.gov';
     var path = '/blast/Blast.cgi';
-    var rreq = url + path + getResultRequest(jobid, resulttype);
+    var rreq = url + path + retrieveNCBIResultRequest(jobid, resulttype);
 
     var req = rclient.get(rreq, {}, function (res) {
         if(res.BlastOutput2 !== undefined){
-            console.log('writing  results for job ' + jobid);
+            console.log('indexing BLAST results for NCBI job ' + jobid);
             client.index({
                 index: _index,
                 type: "xml2",

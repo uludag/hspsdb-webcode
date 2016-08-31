@@ -10,7 +10,7 @@ var qpaths={
 var nextprevq;
 
 
-function executeQueryDisplayResults(server, index, querywof, nextprevq_)
+function executeQueryDisplayResults(server, querywof, nextprevq_)
 {
     var startfrom = $("#startfrom").val();
     //var rows = $("#rows").val();
@@ -18,7 +18,7 @@ function executeQueryDisplayResults(server, index, querywof, nextprevq_)
 
     $("#q").val(decodeURIComponent(querywof));
 
-    var qurl = server+index+"/_search?";
+    var qurl = server + "_search?";
 
     if(nextprevq===true)
         qurl += "from="+(startfrom-1);
@@ -37,11 +37,6 @@ function executeQueryDisplayResults(server, index, querywof, nextprevq_)
 
     $.postJSON(qurl, queryrequest, function(r){
         processQueryResults(r, query);}).fail(queryFailed);
-
-    //MongoDB query
-    //qurl = "http://localhost:3000/mdbr/" +index+"/_search?";
-    //$.postJSON(qurl, queryrequest, processQueryResults).fail(queryFailed);
-
 };
 
 

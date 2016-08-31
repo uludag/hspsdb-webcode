@@ -1,5 +1,6 @@
 
-index = "hspsdb-test";
+
+//Nodejs server URL for processin Elasticsearch requests
 server = window.location.origin + "/esr/";
 
 function selecttab(a)
@@ -18,7 +19,7 @@ function tabclick(event)
     {
         $("#staticcontent").hide();
         $("#searchresults").show();
-        executeQueryDisplayResults(server, index, '*', false);
+        executeQueryDisplayResults(server, '*', false);
         return;
     }
     selecttab(this);
@@ -65,9 +66,9 @@ function ncbiimport(event)
     {
         event.preventDefault();
         if(event.originalEvent===undefined)
-            return;        
+            return;
     }
-    
+
     var jobid = $("#ncbijobid").val();
     $.ajax({
         url: server+"ncbiimport?jobid=" + jobid,
@@ -87,7 +88,7 @@ function ncbiimport(event)
 
 function documentready()
 {
-    if("index" in window) autocompleteConfig_es();
+    autocompleteConfig_es();
     $("#ncbiimport").submit(ncbiimport);
 
     if($("#searchresults").size() > 0)
@@ -96,7 +97,7 @@ function documentready()
         $(tables).hide();
         $("#leftcontent").hide();
         $("#query-form").submit(queryformsubmit);
-        
+
 
         $("#query-form a").click(function(event)
         {
@@ -109,34 +110,29 @@ function documentready()
 
     var query = getURLParam("q");
 
-    if(query===undefined)
+    if(query === undefined)
     {
         //var page = getURLParam("page");
         //tabload((page===undefined?"home":page)+".html");
         query = $("#q").val();
     }
 
-    if(query===undefined)
-        query="*";
-    
-    if("index" in window) {
-        $("#staticcontent").hide();
-        $("#searchresults").show();
-        executeQueryDisplayResults(server, index, query, false);
-    };
+    if(query === undefined)  query="*";
+
+    $("#staticcontent").hide();
+    $("#searchresults").show();
+    executeQueryDisplayResults(server, query, false);
 
     $("#startfrom, #rows").keydown(changeSetOfResultsDisplayed);
 
     $("#emax").keydown(function( event )
     {
-        if( event.which === 13 )
-        {
+        if( event.which === 13 ) {
             event.preventDefault();
             executeFormQuery(false);
         }
     });
-    
-    
+
     var attrfilter = getURLParam("attrfilter");
     var attrfilterval = getURLParam("attrfilterval");
     if(attrfilter!==undefined)
@@ -159,7 +155,7 @@ function changeSetOfResultsDisplayed( event )
 
 function autocompleteConfig_es()
 {
-    var searchurl =  server + index + "/_suggest";
+    var searchurl =  server + "_suggest";
 
     $("#q").autocomplete(
     {
@@ -171,10 +167,11 @@ function autocompleteConfig_es()
                 "text": charstyped,
                 "termsuggestion": {
                     "term": {
-                        //"prefix_length": 2,
+                        "prefix_length": 1,
                         "field": "_all",
-                        //"max_inspections": 4000,
-                        //"min_word_length": 3,
+                        "max_edits": 2,
+                        "max_inspections": 10,
+                        "min_word_length": 3,
                         "size": 200
                     }
                 }//,
@@ -253,5 +250,5 @@ function getURLParam(name)
 function executeFormQuery(prevnextq)
 {
     var query = $("#q").val();
-    executeQueryDisplayResults(server, index, query, prevnextq);
+    executeQueryDisplayResults(server, query, prevnextq);
 }
