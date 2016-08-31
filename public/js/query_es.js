@@ -7,14 +7,11 @@ var qpaths={
     hsps: "BlastOutput2.report.results.search.hits.hsps"
 };
 
-var nextprevq;
 
-
-function executeQueryDisplayResults(server, querywof, nextprevq_)
+function executeQueryDisplayResults(server, querywof, nextprevq)
 {
     var startfrom = $("#startfrom").val();
     //var rows = $("#rows").val();
-    nextprevq = nextprevq_;
 
     $("#q").val(decodeURIComponent(querywof));
 
@@ -36,7 +33,7 @@ function executeQueryDisplayResults(server, querywof, nextprevq_)
     var query = $("#q").val();
 
     $.postJSON(qurl, queryrequest, function(r){
-        processQueryResults(r, query);}).fail(queryFailed);
+        processQueryResults(r, query, nextprevq);}).fail(queryFailed);
 };
 
 
@@ -47,11 +44,8 @@ function queryFailed(errmsg)
 };
 
 
-function processQueryResults(result, query)
+function processQueryResults(result, query, nextprevq)
 {
-    if(result.mongodb!==undefined)
-     console.log(result.mongodb._id);
-
     var ptinput =  displayQueryResults(result, nextprevq, query);
 
     if(nextprevq === false)
@@ -89,7 +83,6 @@ function addAttrFilter(must)
 {
     var i, e, qt_;
     var l = $("input:checked[name=topic]");
-
     var afs = new Map();
 
     for(i=0; i<l.length; i++)
@@ -98,7 +91,6 @@ function addAttrFilter(must)
         var path_ = $(e).attr("path");
         var v = $(e).val();
         var a = path_.split(",");
-
         var mpq_ = jQuery.extend(true, {}, mpq);
 
         if(qpaths[a[0]]===undefined)
@@ -116,42 +108,12 @@ function addAttrFilter(must)
 
         qt_.nested.path = qpaths[a[0]];
         qt_.nested.query.bool.should.push(mpq_);
-
         afs.set(a[0], qt_);
-
     };
 
     afs.forEach(function(e,i){
         must.push(e);
     });
-}
-
-
-/**
- * Reads the query phrase and extracts possible annotation terms.
- *
- * @returns {String|getAnnotationTermFilter.ret}
- */
-function getAnnotationTermFilter()
-{
-    var annottermfilter = $("#q").val();
-
-    var a = annottermfilter.split(' ');
-    var ret="";
-    for(var i=0; i<a.length; i++)
-    {
-        var t = a[i];
-        if(t!=="AND" && t!=="OR" && t.indexOf(':')===-1)
-        {
-            if(ret.length>0) ret += " ";
-            ret += t;
-        }
-    }
-
-    $("#annottermfilter").val(ret);
-
-
-    return ret;
 }
 
 
@@ -166,18 +128,18 @@ function getQueryRequest_query(query)
                         default_field: "_all",
                         default_operator: "AND",
                         query: query
-                    }}]//,
-            //            filter: {
-            //                nested:{
-            //                    path:"BlastOutput2.report.results.search.hits.hsps",
-            //                    query:{
-            //                        "bool": {
-            //                            "must":[]}}}
-            //            }
+                    }}],
+            filter: {
+                nested:{
+                    path:"BlastOutput2.report.results.search.hits.hsps",
+                    query:{
+                        "bool": {
+                            "must":[]}}}
+            }
         }
     };
 
-    addEvalueFilterToQuery(q.bool.must);
+    addEvalueFilterToQuery(q.bool.filter.nested.query.bool.must);
     addAttrFilter(q.bool.must);
 
     //    if(q.bool.filter.nested.query.bool.must.length>0)

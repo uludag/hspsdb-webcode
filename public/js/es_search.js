@@ -7,31 +7,25 @@ function addEvalueFilterToQuery(must)
     {
         var evalue;
         evalue = Number(emax);
-        
+
         if(isNaN(evalue))
         {
-            alert("e-value entered is not number: "+emax);
+            alert("e-value entered is not number: " + emax);
         }
         else if(evalue>100)
         {
-            alert("e-value should be smaller than 100: "+evalue);
+            alert("e-value should be smaller than 100: " + evalue);
         }
         else
         {
-            var fdrQuery = {
-                nested: {
-                    path: "BlastOutput2.report.results.search.hits.hsps",
-                    query: {
-                        range: {
-                            "BlastOutput2.report.results.search.hits.hsps.evalue": {
-                                lte: emax
-                            }
-                        }
+            var r = {
+                range: {
+                    "BlastOutput2.report.results.search.hits.hsps.evalue": {
+                        lte: emax
                     }
                 }
             };
-        }
-        must.push(fdrQuery);
+        must.push(r);
     }
 }
-
+}
