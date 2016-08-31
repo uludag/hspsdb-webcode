@@ -68,8 +68,8 @@ function attributefilters(query, fc)
     for(i=0; i < l.length; i++)  v.push($(l[i]).val());
 
     var ul = $("#attrfilters");
-    $("#attrfilters div").remove();
-    $("#attrfilters li").remove();
+    ul.empty();
+    
     for(i=0;i<ffl.length;i++)
     {
         var facets="";
