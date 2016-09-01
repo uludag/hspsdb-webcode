@@ -61,7 +61,9 @@ function blastOutput2sLine(id, r, nSearches) {
     var l = "<p class='bresult'>"
         + "<a href='?q=_id:" + id + "'>" + id + "</a> ";
     
-    l += "(<a href=/esr/retrieve-blast-output?q=" + id + ">json output</a>)</p>";
+    l += "(<a href=/esr/retrieve-blast-output?q=" + id + ">json output</a>)"
+        + "(TODO:link/full result view)"
+        +"</p>";
     
     l += "<p><b>Program</b>: " + r.program
         + ",  <b>Database</b>: " + r.search_target.db;
@@ -90,13 +92,23 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
 
 
 function describeSearchResult(r){
-    var b= "<p><b>Query</b>: " + r.results.search.query_title + "</p>"
-        + "<p><b>#matched sequences/entries</b>: "
-        + r.results.search.hits.length + "</p>";
-        //+ "Entry matched, Max score, Total score, Query cover, E value, Ident, "
-        //+ "Accession";
+    var i, h, n = r.results.search.hits.length;
+    var s = r.results.search;
+    var b = "<p style='margin-bottom:1px;'><b>Query</b>: " + s.query_title + "</p>"
+        + "<p style='margin-bottom:1px;'><b>"+n+"</b> matches";
+        
+    if(n > 10)  b += " (10 listed)";
+    
+    b += ":</p><p>";
+    for(i = 0; i <= 10; i++){
+        h = s.hits[i]; 
+        b += h.description[0].accession + " "; 
+    };
+    b += "</p>";
+
     return b;
 }
+
 
 function reportOutput(output)
 {

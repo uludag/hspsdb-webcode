@@ -22,7 +22,7 @@ function executeQueryDisplayResults(server, querywof, nextprevq)
     else
         qurl += "from=0";
 
-    qurl += "&size="+10;
+    qurl += "&size=" + 5;
 
     $("#nresults").text("");
     $("tbody tr").remove();
@@ -153,7 +153,8 @@ function getQueryRequest_QueryPlusAggs(query)
 {
     var q = getQueryRequest_query(query);
     var aggsq = getQueryRequest_aggs();
-    var source = ["*.program", "*.query_id", "*.query_title", "*.db"];
+    var source = ["*.program", "*.query_id", "*.query_title",
+        "*.db", "*.accession"];
     var queryrequest =
         "{\n"
         + "\"size\": 10,\n"
@@ -162,26 +163,4 @@ function getQueryRequest_QueryPlusAggs(query)
         + "\"aggs\": " + JSON.stringify(aggsq, null, ' ') + "\n"
         + "}";
     return queryrequest;
-}
-
-
-function updateURLquery(query)
-{
-    var newloc = location.pathname;
-
-    newloc += "?q="+query;
-
-
-    if(typeof window.history !== undefined &&
-            typeof window.history.pushState !== undefined)
-    {
-        window.history.pushState({
-            query: query,
-            lastqueryresult: lastqueryresult
-            //searchresults: $("#searchresults").html()
-        },
-        query, newloc);
-        //console.log("query pushed "+query);
-    }
-
 }
