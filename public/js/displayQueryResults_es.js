@@ -11,7 +11,6 @@ function displayQueryResults(result, nextprevq, query)
 
     //remove previous results if any
     $("#tablescontainer").empty();
-    //$("#searchresults").show();
 
     if(nhits > 0) {
         var ptinput = new Array();
@@ -59,14 +58,17 @@ function displayQueryResults(result, nextprevq, query)
 
 
 function blastOutput2sLine(id, r, nSearches) {
-    var r = "<p class='bresult'>"
-        + "<a href='?q=_id:" + id + "'>" + id + "</a></p>"
-        + "<p><b>Program</b>: " + r.program
+    var l = "<p class='bresult'>"
+        + "<a href='?q=_id:" + id + "'>" + id + "</a> ";
+    
+    l += "(<a href=/esr/retrieve-blast-output?q=" + id + ">json output</a>)</p>";
+    
+    l += "<p><b>Program</b>: " + r.program
         + ",  <b>Database</b>: " + r.search_target.db;
     if(nSearches>1)
-        r += " (include " + nSearches + " searches)";
-    r += "</p>";
-    return r;
+        l += " (include " + nSearches + " searches)";
+    l += "</p>";
+    return l;
 }
 
 
@@ -90,9 +92,9 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
 function describeSearchResult(r){
     var b= "<p><b>Query</b>: " + r.results.search.query_title + "</p>"
         + "<p><b>#matched sequences/entries</b>: "
-        + r.results.search.hits.length + "</p>"
-        + "Entry matched, Max score, Total score, Query cover, E value, Ident, "
-        + "Accession";
+        + r.results.search.hits.length + "</p>";
+        //+ "Entry matched, Max score, Total score, Query cover, E value, Ident, "
+        //+ "Accession";
     return b;
 }
 
@@ -216,7 +218,6 @@ function insertHitrow(hit, qid, qtitle, querylength)
     row += "</p>";
     row += "</td>";
 
-
     /** 3rd column, query/hit length **/
     row += "<td class=\"numcol\" colspan=1>";
     row += " <p>"
@@ -336,25 +337,4 @@ function getHspRow(hsp, hitid)
 
     row += "</tr>\n";
     return row;
-}
-
-
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-}
-
-
-function getUniprotLinks(tfsa)
-{
-    var l;
-    var tf;
-    var ret="";
-    for(i=0; i<tfsa.length;i++)
-    {
-        tf = tfsa[i];
-        l = "<a href='http://www.uniprot.org/uniprot/";
-        l += tf+"' target='_blank'>"+tf+"</a> ";
-        ret += l;
-    }
-    return ret;
 }

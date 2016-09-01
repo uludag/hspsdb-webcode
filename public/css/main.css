@@ -1,6 +1,6 @@
 
 .bresult{
-    border-top: 2px dotted #BF8E3E;
+    border-bottom: 1px dotted #BF8E3E;
     margin-top: 16px;
     padding-top: 4px;
 }
@@ -513,11 +513,6 @@ form
     margin-bottom: 2px;
 }
 
-
-#statistics td,th
-{
-    padding: 8px;
-}
 
 #statistics tr th:nth-child(2),
 #statistics tr th:nth-child(3),

@@ -19,6 +19,30 @@ var _index = "hspsdb-test";
 var _type = "xml2";
 
 
+router.get('/esr/retrieve-blast-output', function (req, res)
+{
+    var query = req.query.q;
+    
+    client.search({
+        requestTimeout: 14000,
+        index: _index,
+        type: _type,
+        body: {
+            "query": {
+                query_string:{
+                    default_field: "_id",
+                    query: query
+                }}}
+    }).then(function (resp) {
+        res.type('json');
+        res.status(200).send(JSON.stringify(resp, null, ' '));
+    }, function (err) {
+        console.trace(err.message);
+        res.render('retrieve-blast-output failed:', {response: err.message});
+    });
+});
+
+
 router.post('/esr/_search', function (req, res)
 {
     var esreq = {
