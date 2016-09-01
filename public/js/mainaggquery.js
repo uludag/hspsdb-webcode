@@ -3,7 +3,7 @@
 function getQueryRequest_aggs()
 {
     var emax = $("#emax").val();
-    var bucketsize = 800;
+    var bucketsize = 100;
 
     var aggs = {
         "bhits" : {
@@ -63,31 +63,28 @@ function getQueryRequest_aggs()
                 }}
         },
         "hsps": {
-            "filter": {
-                "nested": {
-                    "path": "BlastOutput2.report.results.search.hits.hsps",
-                    "query": {
-                        "range": {
-                            "BlastOutput2.report.results.search.hits.hsps.evalue": {
-                                "lte": emax
-                            }
-                        }
-                    }
-                }
-            },
+            "nested": {
+                "path": "BlastOutput2.report.results.search.hits.hsps"
+            },        
             "aggs": {
                 "hsps": {
-                    "nested": {
-                        "path": "BlastOutput2.report.results.search.hits.hsps"
+                    "filter": {
+                        "query": {
+                            "range": {
+                                "BlastOutput2.report.results.search.hits.hsps.evalue": {
+                                    "lte": emax
+                                }
+                            }
+                        }
                     },
                     "aggs": {
-
+                        
                         "hseq":{
                             "terms" : {
                                 "field" : "BlastOutput2.report.results.search.hits.hsps.hseq"
                             }
                         }
-
+                        
                     }
                 }
             }
@@ -121,7 +118,8 @@ function aggsForMainResultsView()
                 "aggs": {
                     "query_title": {
                         "terms": {
-                            "field": "BlastOutput2.report.results.search.query_title.raw"
+                            "field": "BlastOutput2.report.results.search.query_title.raw",
+                            "size": 10
                         },
                         "aggs": {
                             "hits": {
