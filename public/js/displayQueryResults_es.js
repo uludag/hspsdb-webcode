@@ -60,11 +60,11 @@ function displayQueryResults(result, nextprevq, query)
 function blastOutput2sLine(id, r, nSearches) {
     var l = "<p class='bresult'>"
         + "<a href='?q=_id:" + id + "'>" + id + "</a> ";
-    
+
     l += "(<a href=/esr/retrieve-blast-output?q=" + id + ">json output</a>)"
         + "(TODO:link/full result view)"
         +"</p>";
-    
+
     l += "<p><b>Program</b>: " + r.program
         + ",  <b>Database</b>: " + r.search_target.db;
     if(nSearches>1)
@@ -92,17 +92,17 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
 
 
 function describeSearchResult(r){
-    var i, h, n = r.results.search.hits.length;
+    var i, h, n;
     var s = r.results.search;
-    var b = "<p style='margin-bottom:1px;'><b>Query</b>: " + s.query_title + "</p>"
-        + "<p style='margin-bottom:1px;'><b>"+n+"</b> matches";
-        
-    if(n > 10)  b += " (10 listed)";
-    
-    b += ":</p><p>";
-    for(i = 0; i <= 10; i++){
-        h = s.hits[i]; 
-        b += h.description[0].accession + " "; 
+    var b = "<p style='margin-bottom:1px;'><b>Query</b>: "
+        + s.query_title + "</p>";
+    n = s.hits.length;
+    if(n > 10)  { b += " (10 listed)"; n = 10; }
+    b += "<p style='margin-bottom:1px;'><b>"+n+"</b> matches"
+        + ":</p><p>";
+    for(i = 0; i < n; i++){
+        h = s.hits[i];
+        b += h.description[0].accession + " ";
     };
     b += "</p>";
 
