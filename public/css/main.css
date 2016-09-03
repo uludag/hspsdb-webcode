@@ -1,7 +1,13 @@
 
 .bresult{
-    border-bottom: 1px dotted #BF8E3E;
+    border-bottom: 1px dashed #BF8E3E;
     margin-top: 16px;
+    padding-top: 4px;
+}
+
+.bquery{
+    border-bottom: 1px dotted #BF8E3E;
+    margin-top: 1px;
     padding-top: 4px;
 }
 

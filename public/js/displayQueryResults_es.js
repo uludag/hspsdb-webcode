@@ -67,16 +67,20 @@ function blastOutput2sLine(id, r, nSearches) {
 
     l += "<p><b>Program</b>: " + r.program
         + ",  <b>Database</b>: " + r.search_target.db;
-    if(nSearches>1)
+    if(nSearches > maxSearches)
+        l += " (include " + nSearches + " searches, 5 listed)";
+    else if(nSearches > 1)
         l += " (include " + nSearches + " searches)";
     l += "</p>";
     return l;
 }
 
+var maxSearches = 5;
+var maxHits = 10;
 
 function displayBlastOutput2(h) // each hit is one or more BlastOutput2
 {
-    var r;
+    var i, r, n;
     if(h._source.BlastOutput2[0] === undefined ){
         r = h._source.BlastOutput2.report;
         $("#tablescontainer").append(blastOutput2sLine(h._id, r, 1));
@@ -86,7 +90,10 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
         r = h._source.BlastOutput2[0].report;
         $("#tablescontainer").append(
             blastOutput2sLine(h._id, r, h._source.BlastOutput2.length));
-        h._source.BlastOutput2.forEach(reportOutput);
+        n = h._source.BlastOutput2.length;
+        if (n > maxSearches) n = maxSearches;
+        for(i = 0; i < n; i++)
+            reportOutput(h._source.BlastOutput2[i]);
     }
 }
 
@@ -94,18 +101,17 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
 function describeSearchResult(r){
     var i, h, n;
     var s = r.results.search;
-    var b = "<p style='margin-bottom:1px;'><b>Query</b>: "
+    var b = "<p class='bquery'><b>Query</b>: "
         + s.query_title + "</p>";
     n = s.hits.length;
-    if(n > 10)  { b += " (10 listed)"; n = 10; }
-    b += "<p style='margin-bottom:1px;'><b>"+n+"</b> matches"
-        + ":</p><p>";
+    b += "<p style='margin-bottom:1px;'><b>"+n+"</b> matches";
+    if(n > maxHits)  { b += " (10 listed)"; n = maxHits; }
+    b += ":</p><p>";
     for(i = 0; i < n; i++){
         h = s.hits[i];
         b += h.description[0].accession + " ";
     };
     b += "</p>";
-
     return b;
 }
 
