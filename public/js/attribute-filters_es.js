@@ -114,6 +114,20 @@ function attributefilters(query, fc)
         $(this).siblings("input").prop("checked", "checked");
         attrFilterQuerySubmit(query, this);
     });
+    
+    $("input[name=topic]").click(function cbclick(e)
+    {
+        var a = $(this).siblings().first();
+        var attrfilter = $(a).attr("ffl");
+        var attrfilterval = $(a).attr("fval");
+        
+        if($(this).prop("checked") === true)
+            addAttrFilterEntry(attrfilter, attrfilterval);
+        else
+        {
+            $("#"+attrfilterval.replace(attvalsafe, "")).remove();
+        }
+    });
 }
 
 
@@ -141,6 +155,41 @@ function addAttrFilterCheckbox(attrfilter, attrfilterval)
     //$("#atfcb").click(function (e)  {    });
 }
 
+var attvalsafe = /[\(\):34 ]/g;
+
+// Adds an entry close to the Search box
+// that should allow deleting the selected attribute filters
+function addAttrFilterEntry(attrfilter, attrfilterval)
+{
+    var id = attrfilterval.replace(attvalsafe, "");
+    if($("#"+id).size() === 0)
+    {
+        var qp = attrfilter+":\""+attrfilterval+"\"";
+        $("#atfl").append(
+            "<li id='" + id + "'>"
+            + qp
+            + " [<a href='?'>X</a>]"
+            + "</li>"
+            );
+        
+        var li = $("#atfl li").last();
+        var a = $(li).children('a');
+        
+        $(a).click(function (e)
+        {
+            e.preventDefault();
+            
+            $("li a[ffl=\""+attrfilter+"\"][fval=\""+attrfilterval+"\"]")
+                .prev().prop("checked", false);
+            
+            // update results
+            executeFormQuery(false);
+            
+            $(li).remove();
+        });
+    }
+}
+
 
 function attrFilterQuerySubmit(q, a)
 {
@@ -148,6 +197,15 @@ function attrFilterQuerySubmit(q, a)
     //var fval = $(a).attr("fval");
     //addAttrFilterCheckbox(ffl, fval);
     // later addAttrFilter function adds attribute filter clauses
+    
+    var ffl = $(a).attr("ffl");
+    var fval = $(a).attr("fval");
+    var cb = $(a).siblings().first();
+    
+    if( !$(cb).is(":checked") )
+        $(cb).prop("checked", "checked");
+
+    addAttrFilterEntry(ffl, fval);    
     executeQueryDisplayResults(server, q, false);
 }
 

@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.tablesorter.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css"/>
-    <link rel="stylesheet" type="text/css" href="css/ts.theme.default.css">
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
     <link rel="stylesheet" type="text/css" href="css/pivot.css"/>
@@ -16,12 +14,12 @@
     <link rel="stylesheet" href="js/lib/kablammo/css/kablammo.css">
     <link rel="stylesheet" href="js/lib/kablammo/css/svg.css">
     <script src="js/mainaggquery.js"></script>
-    <script type="text/javascript" src="js/query_es.js"></script>
-    <script type="text/javascript" src="js/displayQueryResults_es.js"></script>
-    <script type="text/javascript" src="js/attribute-filters_es.js"></script>
-    <script type="text/javascript" src="js/entry.js"></script>
-    <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/es_search.js"></script>
+    <script src="js/query_es.js"></script>
+    <script src="js/displayQueryResults_es.js"></script>
+    <script src="js/attribute-filters_es.js"></script>
+    <script src="js/entry.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/es_search.js"></script>
     <script src="js/lib/highcharts.js"></script>
     <script src="js/lib/pivot.js"></script>
     <script src="js/lib/d3.min.js"></script>
@@ -31,8 +29,7 @@
     <script src="js/lib/kablammo/js/graph.js"></script>
     <script src="js/lib/kablammo/js/grapher.js"></script>
     <script src="js/kview.js"></script>
-
-    <script type="text/javascript" src="js/docready_es.js"></script>
+    <script src="js/docready_es.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -70,19 +67,16 @@
                         <input id="emax" style="margin-right: 6px;"
                                title=
                                "Filter sequence/entry matches by their e-values"
-                               value="100" size="6">
+                               value="1" size="6">
                     </div>
                 </form>
             </div>
         </div>
 
         <div id="content">
-
             <div id="searchresults" class="container-fluid"
                  style="font-family: Calibri; font-size: medium;">
-
                 <div class="row">
-
                     <div class="col-sm-8">
                         <p id="nresults" style="color: #f77709;">
                             Enter your query above in the search box to see the list of matching
@@ -91,18 +85,14 @@
                         <p id="notifications">
                         </p>
                     </div>
-
                     <div id="filters" class="col-sm-4"
                          style="font-size:small; font-weight: 600;">
-                        <div id='atf'></div>
-
+                        <div id='atf'>
+                            <ul id="atfl"></ul>
+                        </div>
                         <br>
-
-
                     </div>
-
                 </div>
-
 
                 <!--div id="navigation" style="float: none; padding-left: 0.2em;">
                             Displaying <input id="rows" size="2" value="1"
@@ -173,7 +163,7 @@
                     We will here have navigation options to select other entries,
                     where an entry means an NCBI-BLAST search result.
                     We also encourage users to narrow search results
-                    using the attribute filters provided based on the aggregation query
+                    using the attribute filters provided based on the aggregation
                     results.
                     </em>
                         <div class="col-md-7" id="maincontent">

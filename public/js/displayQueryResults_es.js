@@ -68,9 +68,9 @@ function blastOutput2sLine(id, r, nSearches) {
     l += "<p><b>Program</b>: " + r.program
         + ",  <b>Database</b>: " + r.search_target.db;
     if(nSearches > maxSearches)
-        l += " (include " + nSearches + " searches, 5 listed)";
+        l += " (includes " + nSearches + " searches, 5 listed)";
     else if(nSearches > 1)
-        l += " (include " + nSearches + " searches)";
+        l += " (includes " + nSearches + " searches)";
     l += "</p>";
     return l;
 }
