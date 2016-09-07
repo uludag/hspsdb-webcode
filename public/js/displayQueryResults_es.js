@@ -75,6 +75,21 @@ function blastOutput2sLine(id, r, nSearches) {
     return l;
 }
 
+
+function shortQueryTitle(query_id, query_title)
+{
+    var t = query_id + ": ";
+    if(query_title.length > 50)
+    {
+        t += query_title.substring(0, 46);
+        t += " <a href='#' title='" + query_title + "'>...</a>";
+    }
+    else
+        t += query_title ;
+    return t;
+}
+
+
 var maxSearches = 5;
 var maxHits = 10;
 
@@ -101,10 +116,10 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
 function describeSearchResult(r){
     var i, h, n;
     var s = r.results.search;
-    var b = "<p class='bquery'><b>Query</b>: "
-        + s.query_title + "</p>";
+    var b = "<p class='bquery'><b>Query</b>: ";
+    b += shortQueryTitle(s.query_id, s.query_title);
     n = s.hits.length;
-    b += "<p style='margin-bottom:1px;'><b>"+n+"</b> matches";
+    b += "</p><p style='margin-bottom:1px;'><b>"+n+"</b> matches";
     if(n > maxHits)  { b += " (10 listed)"; n = maxHits; }
     b += ":</p><p>";
     for(i = 0; i < n; i++){

@@ -3,7 +3,7 @@
 /**
  * Returns jQuery wrapped element that should hold kablammo view's svg
  */
-function svgContainer_() {
+function new_SVG_container_() {
     $("#svgContainer").append("<div></div>");
     return $("#svgContainer div:last");
 }
@@ -65,14 +65,17 @@ function report_individual_query_results(blastoutput)
         query.title = report_.results.search.query_title;
         khit.query = query;
         khit.program = report_.program;
-        var svgContainer = svgContainer_();
-        $(svgContainer).append("<h3>"+khit.query.title+"<h3>");
+        var svgContainer = new_SVG_container_();
+        $(svgContainer).append("<h3>"
+            + shortQueryTitle(query.id, query.title) + "<h3>");
         
         $.each(query.hits, function reporthit(j, hit)
         {
-            svgContainer = svgContainer_();
+            svgContainer = new_SVG_container_();
             khit.hit = hit;
-            $(svgContainer).append("<br>"+khit.hit.title+"<br>");
+            $(svgContainer).append("<br>"
+                + shortQueryTitle(hit.id, hit.title)
+                + "<br>");
             var results={
                 "query_seq_type": "nucleic_acid",
                 "subject_seq_type": "nucleic_acid"};

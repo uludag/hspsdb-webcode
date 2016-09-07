@@ -35,7 +35,7 @@ body {
 
 #attrfilters div {
     margin-bottom: 8px;
-    max-height: 140px;
+    max-height: 180px;
     /*max-width: 360px;*/
     overflow: auto;
 }

@@ -1,6 +1,6 @@
 
 var ffl =[
-    ["search", "query_title"],
+    ["search", "query_id"],
     ["search_target","db"],
     ["report", "program"],
     ["bhits", "description.sciname"],
@@ -13,7 +13,7 @@ var fflnames =[
     "Search type/program",
     "Species/sequence-source",
     "Matched sequences/entries",
-    "DB sequences matched (experimental)"
+    "Sequence segments matched"
 ];
 var units =[
     "#searches",
@@ -29,7 +29,7 @@ function getbuckets(fc, path)
 {
     var i, ret;
     var buckets = fc;
-    
+
     for(i = 0; (i < path.length && buckets !== undefined); i++)
     {
         buckets = buckets[path[i]];
@@ -48,7 +48,7 @@ function aggregationGroupHeader(r, i){
     h = "<li class='attrfilterheader'>";
     h += (r.other_doc_count + r.buckets.length);
     h += " <span style='font-weight:bold'>" + fflnames[i]
-        + "</span> (" + units[i] + ")";    
+        + "</span> (" + units[i] + ")";
     h += "</li>";
     if(r.other_doc_count > 0)
         h += "<span style='font-size:-3;'>(only " + r.buckets.length
@@ -69,7 +69,7 @@ function attributefilters(query, fc)
 
     var ul = $("#attrfilters");
     ul.empty();
-    
+
     for(i=0;i<ffl.length;i++)
     {
         var facets="";
@@ -98,9 +98,6 @@ function attributefilters(query, fc)
                 +title
                 +"</a> ("+buckets[j].doc_count;
 
-            if(ffl[i]==="rna_type" && buckets[j].transcripts!==undefined)
-                newli += ", " + buckets[j].transcripts.value;
-
             newli +=")</li>";
 
             facets += newli;
@@ -114,15 +111,15 @@ function attributefilters(query, fc)
         $(this).siblings("input").prop("checked", "checked");
         attrFilterQuerySubmit(query, this);
     });
-    
+
     $("input[name=topic]").click(function cbclick(e)
     {
         var a = $(this).siblings().first();
         var attrfilter = $(a).attr("ffl");
         var attrfilterval = $(a).attr("fval");
-        
+
         if($(this).prop("checked") === true)
-            addAttrFilterEntry(attrfilter, attrfilterval);
+            addSelectedFilterEntry(attrfilter, attrfilterval);
         else
         {
             $("#"+attrfilterval.replace(attvalsafe, "")).remove();
@@ -140,51 +137,33 @@ function attrFilterQuery(q, ff, a) {
 }
 
 
-function addAttrFilterCheckbox(attrfilter, attrfilterval)
-{
-    var qp = attrfilter+":\""+attrfilterval+"\"";
-    $("#atf").html(
-        "<input id='atfcb' name='topic' "
-        + " value='" + buckets[k].key + "'"
-        + " path='" + ffl[i] + "'"
-        +" type='checkbox' "
-        +"title='click me to repeat the last query without this filter'"
-        +"checked='checked'></input><span>"
-        +qp+"</span>");
-
-    //$("#atfcb").click(function (e)  {    });
-}
-
-var attvalsafe = /[\(\):34 ]/g;
+var attvalsafe = /[\(\):34 \.]/g;
 
 // Adds an entry close to the Search box
 // that should allow deleting the selected attribute filters
-function addAttrFilterEntry(attrfilter, attrfilterval)
+function addSelectedFilterEntry(attrfilter, attrfilterval)
 {
     var id = attrfilterval.replace(attvalsafe, "");
-    if($("#"+id).size() === 0)
+    if($("#" + id).size() === 0)
     {
         var qp = attrfilter+":\""+attrfilterval+"\"";
         $("#atfl").append(
             "<li id='" + id + "'>"
             + qp
-            + " [<a href='?'>X</a>]"
-            + "</li>"
+            + " [<a href='#' "
+            + "title='click me to repeat the current query without this filter'"
+            + ">X</a>]</li>"
             );
-        
+
         var li = $("#atfl li").last();
         var a = $(li).children('a');
-        
-        $(a).click(function (e)
-        {
+
+        $(a).click(function (e){
             e.preventDefault();
-            
             $("li a[ffl=\""+attrfilter+"\"][fval=\""+attrfilterval+"\"]")
                 .prev().prop("checked", false);
-            
             // update results
             executeFormQuery(false);
-            
             $(li).remove();
         });
     }
@@ -193,19 +172,14 @@ function addAttrFilterEntry(attrfilter, attrfilterval)
 
 function attrFilterQuerySubmit(q, a)
 {
-    //var ffl = $(a).attr("ffl");
-    //var fval = $(a).attr("fval");
-    //addAttrFilterCheckbox(ffl, fval);
-    // later addAttrFilter function adds attribute filter clauses
-    
     var ffl = $(a).attr("ffl");
     var fval = $(a).attr("fval");
     var cb = $(a).siblings().first();
-    
+
     if( !$(cb).is(":checked") )
         $(cb).prop("checked", "checked");
 
-    addAttrFilterEntry(ffl, fval);    
+    addSelectedFilterEntry(ffl, fval);
     executeQueryDisplayResults(server, q, false);
 }
 

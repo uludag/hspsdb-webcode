@@ -21,7 +21,7 @@ function pt_prepareInputs(aggs)
         "#HSPs", "score"];
     ptinput.push(attnames);
 
-    $.each(aggs.search.query_title.buckets, function(i, searchqueryid)
+    $.each(aggs.search.query_id.buckets, function(i, searchqueryid)
     {
         $.each(searchqueryid.hits.taxid_count.buckets, function(j, speciesmatch)
         {

@@ -116,9 +116,9 @@ function aggsForMainResultsView()
                     "path": "BlastOutput2.report.results.search"
                 },
                 "aggs": {
-                    "query_title": {
+                    "query_id": {
                         "terms": {
-                            "field": "BlastOutput2.report.results.search.query_title.raw",
+                            "field": "BlastOutput2.report.results.search.query_id.raw",
                             "size": 10
                         },
                         "aggs": {
