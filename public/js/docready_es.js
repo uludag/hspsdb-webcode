@@ -108,21 +108,22 @@ function documentready()
         });
     }
 
-    var query = getURLParam("q");
-
-    if(query === undefined)
-    {
-        //var page = getURLParam("page");
-        //tabload((page===undefined?"home":page)+".html");
-        query = $("#q").val();
+    if($("#q").size() === 1){
+        var query = getURLParam("q");
+        
+        if(query === undefined)
+        {
+            //var page = getURLParam("page");
+            //tabload((page===undefined?"home":page)+".html");
+            query = $("#q").val();
+        }
+        
+        if(query === undefined)  query="*";
+        
+        $("#staticcontent").hide();
+        $("#searchresults").show();
+        executeQueryDisplayResults(server, query, false);
     }
-
-    if(query === undefined)  query="*";
-
-    $("#staticcontent").hide();
-    $("#searchresults").show();
-    executeQueryDisplayResults(server, query, false);
-
     $("#startfrom, #rows").keydown(changeSetOfResultsDisplayed);
 
     $("#emax").keydown(function( event )
@@ -157,7 +158,7 @@ function autocompleteConfig_es()
 {
     var searchurl =  server + "_suggest";
 
-    $("#q").autocomplete(
+    ($("#q").size() === 1) && $("#q").autocomplete(
     {
         source: function(request, response)
         {
