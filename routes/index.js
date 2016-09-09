@@ -4,7 +4,7 @@ var restClient = require('node-rest-client').Client;
 var rclient = new restClient();
 var argv = require('minimist')(process.argv.slice(2));
 
-var es_server = (process.env.ES_SERVER || 'http://localhost:9200/');
+var es_server = (process.env.HSPSDB_SERVER || 'http://localhost:9200/');
 if (argv.es_server !== undefined)  es_server = argv.es_server;
 console.dir('es_server: ' + es_server);
 
@@ -15,9 +15,11 @@ var client = new elasticsearch.Client({
   log: ['error', 'warning']
 });
 
-var _index = "hspsdb-test";
-var _type = "xml2";
+var _index = (process.env.HSPSDB_INDEX || 'http://localhost:9200/');
+if (argv.index !== undefined)  _index = argv.index;
+console.dir('es_index: ' + _index);
 
+var _type = "xml2";  // Elasticsearch document type name for BLAST results
 
 router.get('/esr/retrieve-blast-output', function (req, res)
 {
