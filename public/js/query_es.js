@@ -29,7 +29,7 @@ function executeQueryDisplayResults(server, querywof, nextprevq)
 
     var queryrequest = getQueryRequest_QueryPlusAggs(querywof);
 
-    $("#notifications").text("Querying '"+querywof+"'please wait ....");
+    $("#notifications").text("Querying '" + querywof + "'please wait ....");
     var query = $("#q").val();
 
     $.postJSON(qurl, queryrequest, function(r){
@@ -138,8 +138,9 @@ function getQueryRequest_query(query)
             }
         }
     };
-
-    addEvalueFilterToQuery(q.bool.filter.nested.query.bool.must);
+    var m = q.bool.filter.nested.query.bool.must;
+    addEvalueFilterToQuery(m);
+    addAlignLenFilterToQuery(m)
     addAttrFilter(q.bool.must);
 
     //    if(q.bool.filter.nested.query.bool.must.length>0)

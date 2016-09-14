@@ -165,16 +165,6 @@ a {
 /*  width: 100%;*/
 }
 
-
-
-.query-box, .constraints {
-  padding: 5px;
-  margin: 5px;
-  font-weight: normal;
-  font-size: 14px;
-  letter-spacing: 0.08em;
-}
-
 .query-box #q {
   margin-left: 8px;
   width: 60%;
@@ -182,24 +172,6 @@ a {
   border: 1px solid #999;
   font-size: 1em;
   padding: 0.4em;
-}
-
-.query-box {
-
-}
-
-.query-boost {
-
-  top: 10px;
-  left: 50px;
-  position: relative;
-  font-size: 0.8em;
-}
-
-.query-box .inputs{
-  left: 180px;
-  position: relative;
-
 }
 
 #logo {
@@ -289,18 +261,7 @@ th {
 	padding-right: 8px;
 }
 
-.title-color-shadow
-{
-    color: #666;
-    text-shadow: 3px 3px 0px #CCC, -1px -1px 0px #CCC, 1px -1px 0px #CCC, -1px 1px 0px #CCC, 1px 1px 0px #CCC;
-}
 
-
-.regcol
-{
-    text-align: right;
-    padding-right: 10px;
-}
 
 
 
@@ -329,7 +290,7 @@ th {
 
 .attrfilterheader span
 {
-    font-size: large;
+    font-size: 15px;
     margin-top: 0.8em;
     margin-bottom: 0.3em;
     color: #BF8E3E;

@@ -37,18 +37,17 @@
         <h4>HSPs-db - Database for sequence similarity search results</h4>
         <div class="row">
             <div class="col-sm-8">
-                <p>HSPs-db project aims developing data mining interfaces
+                <p>HSPs-db project aims to develop data mining interfaces
                     and indexing tools for
                     <a href='http://www.ncbi.nlm.nih.gov/'>NCBI</a>-<a
                         href='https://en.wikipedia.org/wiki/BLAST'>BLAST</a>
                     search results.
-                    Current web site you are reading this note
+                    The web site you are reading this note
                     is linked to an Elasticsearch database
-                    that contains sample BLAST results that were indexed
-                    by the scripts we have developed.</p><p>
+                    that contains sample BLAST results.</p><p>
                     <a href="help.html">Help</a> page includes information for
                     indexing BLAST results and installing this web interface
-                    for such indexed BLAST results.
+                    for indexed BLAST results.
                 </p>
 
             </div>
@@ -62,11 +61,16 @@
                         <button id="run" type="submit"
                             class="btn btn-default">Search</button>
                     </div>
-                    <div class="row">
-                        e-value filter:
+                    <div class="row">Filters:
+                        e-value:
                         <input id="emax" style="margin-right: 6px;"
                                title=
-                               "Filter sequence/entry matches by their e-values"
+                               "Filter HSPs by their e-values"
+                               value="1" size="6">
+                        alignment-length:
+                        <input id="minalignlen" style="margin-right: 6px;"
+                               title=
+                               "Filter HSPs by their minimum alignment length"
                                value="1" size="6">
                     </div>
                 </form>
@@ -75,7 +79,7 @@
 
         <div id="content">
             <div id="searchresults" class="container-fluid"
-                 style="font-family: Calibri; font-size: medium;">
+                 style="font-family: Calibri; font-size: 14px;">
                 <div class="row">
                     <div class="col-sm-8">
                         <p id="nresults" style="color: #f77709;">
