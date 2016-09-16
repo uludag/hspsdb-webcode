@@ -25,11 +25,11 @@ function displayQueryResults(result, nextprevq, query)
             + "</span>"
 
             +"&nbsp;&nbsp;&nbsp;&nbsp;Number of database entries matched in these results: "
-            + "<span style='color:#333;'>"+aggs.bhits.doc_count
+            + "<span style='color:#333;'>"+aggs.hsps.filteredhsps.hsps2hits.doc_count
             + "</span>"
             +(        aggs.hsps===undefined ? "" :
             ("&nbsp;&nbsp;&nbsp;&nbsp;Number of HSPs: "
-            + "<span style='color:#333;'>"+aggs.hsps.hsps.doc_count
+            + "<span style='color:#333;'>"+aggs.hsps.filteredhsps.doc_count
             + "</span>")
             )
             +"<span style='padding-left:1em'>Query was: </span>"

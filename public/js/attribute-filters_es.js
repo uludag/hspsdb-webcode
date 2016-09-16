@@ -3,9 +3,9 @@ var ffl =[
     ["search", "query_id"],
     ["search_target","db"],
     ["report", "program"],
-    ["bhits", "description.sciname"],
-    ["bhits", "description.accession"],
-    ["hsps", "hsps", "hseq"]
+    ["hsps", "filteredhsps", "hsps2hits", "description.sciname"],
+    ["hsps", "filteredhsps", "hsps2hits", "description.accession"],
+    ["hsps", "filteredhsps", "hseq"]
 ];
 var fflnames =[
     "Query sequences",

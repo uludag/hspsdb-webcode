@@ -6,40 +6,6 @@ function getQueryRequest_aggs()
     var bucketsize = 100;
 
     var aggs = {
-        "bhits" : {
-            nested : {
-                path : "BlastOutput2.report.results.search.hits"
-            },
-            "aggs": {
-                //                "efilter": {
-                //                    filter:{
-                //                        "bool": {
-                //                            "must":[],
-                //                            "should": [
-                //                            ]}},
-                //                    aggs : {
-                "description.sciname":{
-                    "terms" : {
-                        "size": bucketsize,
-                        "field" :
-                            "BlastOutput2.report.results.search.hits.description.sciname.raw"
-                    }
-                },
-                "description.accession":{
-                    "terms" : {
-                        "size": bucketsize,
-                        "field" :
-                            "BlastOutput2.report.results.search.hits.description.accession"
-                    }
-                },
-                "taxid_count":{
-                    "terms" : {
-                        "field" :
-                            "BlastOutput2.report.results.search.hits.description.taxid"
-                    }
-                }
-            }//}}
-        },
         "search_target" : {
             nested : {
                 path : "BlastOutput2.report.search_target"
@@ -67,7 +33,7 @@ function getQueryRequest_aggs()
                 "path": "BlastOutput2.report.results.search.hits.hsps"
             },        
             "aggs": {
-                "hsps": {
+                "filteredhsps": {
                     "filter": {
                         "query": {
                             "range": {
@@ -77,7 +43,39 @@ function getQueryRequest_aggs()
                             }
                         }
                     },
-                    "aggs": {
+                    "aggs":{"hsps2hits":{
+                            reverse_nested : {
+                                path : "BlastOutput2.report.results.search.hits"
+                            },
+                            "aggs": {
+                                //                "efilter": {
+                                //                    filter:{
+                                //                        "bool": {
+                                //                            "must":[],
+                                //                            "should": [
+                                //                            ]}},
+                                //                    aggs : {
+                                "description.sciname":{
+                                    "terms" : {
+                                        "size": bucketsize,
+                                        "field" :
+                                                "BlastOutput2.report.results.search.hits.description.sciname.raw"
+                                    }
+                                },
+                                "description.accession":{
+                                    "terms" : {
+                                        "size": bucketsize,
+                                        "field" :
+                                                "BlastOutput2.report.results.search.hits.description.accession"
+                                    }
+                                },
+                                "taxid_count":{
+                                    "terms" : {
+                                        "field" :
+                                                "BlastOutput2.report.results.search.hits.description.taxid"
+                                    }
+                                }
+                            }},
                         
                         "hseq":{
                             "terms" : {
