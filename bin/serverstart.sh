@@ -1,8 +1,12 @@
-
+#!/bin/bash
+# Start Node.js server for HSPs-db web interface
+#
+# Make sure you have checked configuration parameters:
+export HSPSDB_SERVER='http://baloo-dev:9200/';
+export HSPSDB_INDEX='hspsdb-test';
+# Uses default port 3000 if user did not specify any in the command line
 export PORT=${1-3000};
-export ES_SERVER='http://localhost:9200/';
-export ES_SERVER='http://baloo-dev.cbrc.kaust.edu.sa:9200/';
 
-echo "port=${PORT}";
+echo "Server started at http://localhost:${PORT}";
 
 nohup node ./bin/www >& server.log &
