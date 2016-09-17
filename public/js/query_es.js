@@ -139,8 +139,8 @@ function getQueryRequest_query(query)
         }
     };
     var m = q.bool.filter.nested.query.bool.must;
-    addEvalueFilterToQuery(m);
-    addAlignLenFilterToQuery(m)
+    addEvalueFilter(m);
+    addAlignLenFilter(m)
     addAttrFilter(q.bool.must);
 
     //    if(q.bool.filter.nested.query.bool.must.length>0)

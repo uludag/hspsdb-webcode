@@ -10,7 +10,7 @@ function hspsClause(attr, cond, val){
 }
 
 
-function addEvalueFilterToQuery(must){
+function addEvalueFilter(must){
     var e = $("#emax").val();
     if(validate("e-value", e, 0, 1000)){
         var r = hspsClause("evalue", "lte", e);
@@ -19,7 +19,7 @@ function addEvalueFilterToQuery(must){
 }
 
 
-function addAlignLenFilterToQuery(must){
+function addAlignLenFilter(must){
     var a = $("#minalignlen").val();
     if(validate("min-alignment-length", a, 0, null)){
         var r = hspsClause("align_len", "gte", a);

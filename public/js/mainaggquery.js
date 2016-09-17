@@ -5,7 +5,7 @@ function getQueryRequest_aggs()
     var emax = $("#emax").val();
     var bucketsize = 100;
 
-    var aggs = {
+    var aggsq = {
         "search_target" : {
             nested : {
                 path : "BlastOutput2.report.search_target"
@@ -35,12 +35,7 @@ function getQueryRequest_aggs()
             "aggs": {
                 "filteredhsps": {
                     "filter": {
-                        "query": {
-                            "range": {
-                                "BlastOutput2.report.results.search.hits.hsps.evalue": {
-                                    "lte": emax
-                                }
-                            }
+                        "bool": {"must":[]
                         }
                     },
                     "aggs":{"hsps2hits":{
@@ -48,13 +43,6 @@ function getQueryRequest_aggs()
                                 path : "BlastOutput2.report.results.search.hits"
                             },
                             "aggs": {
-                                //                "efilter": {
-                                //                    filter:{
-                                //                        "bool": {
-                                //                            "must":[],
-                                //                            "should": [
-                                //                            ]}},
-                                //                    aggs : {
                                 "description.sciname":{
                                     "terms" : {
                                         "size": bucketsize,
@@ -90,18 +78,11 @@ function getQueryRequest_aggs()
         "search": aggsForMainResultsView().aggs.search
     };
 
-    if(emax===undefined || emax==="")
-    {
-        delete aggs.hsps.filter.nested.query.range;
-        aggs.hsps.filter.nested.query["match_all"]={};
-    }
-
-    //addAnnotTermFilter(anc["annotations_count"].aggs.fdrfilter.filter.bool.must);
-    //addAttrFilter(anc["annotations_count"].aggs.fdrfilter.filter.bool.must);
-
-    return aggs;
+    var m = aggsq.hsps.aggs.filteredhsps.filter.bool.must;
+    addEvalueFilter(m);
+    addAlignLenFilter(m);
+    return aggsq;
 }
-
 
 
 function aggsForMainResultsView()
