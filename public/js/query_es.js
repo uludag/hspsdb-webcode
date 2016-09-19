@@ -1,9 +1,9 @@
-
+// query paths for facet fields defined in attribute-filters.js
 var qpaths={
-    search_target: "BlastOutput2.report.search_target",
-    bhits: "BlastOutput2.report.results.search.hits",
     search: "BlastOutput2.report.results.search",
+    search_target: "BlastOutput2.report.search_target",
     report: "BlastOutput2.report",
+    bhits: "BlastOutput2.report.results.search.hits",
     hsps: "BlastOutput2.report.results.search.hits.hsps"
 };
 
@@ -48,18 +48,14 @@ function processQueryResults(result, query, nextprevq)
 {
     var ptinput =  displayQueryResults(result, nextprevq, query);
 
-    if(nextprevq === false)
-    {
-            $("#startfrom").val("1");
-    }
+    //if(nextprevq === false) $("#startfrom").val("1");
 
     if(result.hits.hits.length > 0)
     {
         $("#pivottabletab").show();
         displayResultsInPivotTable(ptinput);
+        ssview(result.hits.hits);
     }
-
-    ssview(result.hits.hits);
 }
 
 
@@ -81,9 +77,9 @@ var qt = {
 
 function addAttrFilter(must)
 {
-    var i, e, qt_;
+    var i, e, qt_, r, p;
     var l = $("input:checked[name=topic]");
-    var afs = new Map();
+    var attrfilters = new Map();
 
     for(i=0; i<l.length; i++)
     {
@@ -92,26 +88,25 @@ function addAttrFilter(must)
         var v = $(e).val();
         var a = path_.split(",");
         var mpq_ = jQuery.extend(true, {}, mpq);
+        r = a[0];
+        if(r === 'hsps' && a[2] == 'hsps2hits')
+            p = qpaths['bhits'];
+        else
+            p = qpaths[r];
 
-        if(qpaths[a[0]]===undefined)
-        {
-            console.log("error: path undefined for "+ a[0]);
-            continue;
-        }
+        mpq_.match_phrase[p + "." + a[a.length-1]] = v;
 
-        mpq_.match_phrase[qpaths[a[0]]+"."+a[a.length-1]] = v;
-
-        if(afs.get(a[0])===undefined)
+        if(attrfilters.get(r) === undefined)
             qt_ = jQuery.extend(true, {}, qt);
         else
-            qt_ = afs.get(a[0]);
+            qt_ = attrfilters.get(r);
 
-        qt_.nested.path = qpaths[a[0]];
+        qt_.nested.path = p;
         qt_.nested.query.bool.should.push(mpq_);
-        afs.set(a[0], qt_);
+        attrfilters.set(a[0], qt_);
     };
 
-    afs.forEach(function(e,i){
+    attrfilters.forEach(function(e,i){
         must.push(e);
     });
 }
@@ -140,7 +135,7 @@ function getQueryRequest_query(query)
     };
     var m = q.bool.filter.nested.query.bool.must;
     addEvalueFilter(m);
-    addAlignLenFilter(m)
+    addAlignLenFilter(m);
     addAttrFilter(q.bool.must);
 
     //    if(q.bool.filter.nested.query.bool.must.length>0)
