@@ -4,31 +4,35 @@ var restClient = require('node-rest-client').Client;
 var rclient = new restClient();
 var argv = require('minimist')(process.argv.slice(2));
 
-var es_server = (process.env.HSPSDB_SERVER || 'http://localhost:9200/');
+var es_server;
 if (argv.es_server !== undefined)  es_server = argv.es_server;
+else
+    es_server = (process.env.ES_SERVER || 'http://localhost:9200/');
 console.dir('es_server: ' + es_server);
 
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
-  host: es_server,
-  requestTimeout: 14000,
-  log: ['error', 'warning']
+    host: es_server,
+    requestTimeout: 14000,
+    log: ['error', 'warning']
 });
 
-var _index = (process.env.HSPSDB_INDEX || 'http://localhost:9200/');
-if (argv.index !== undefined)  _index = argv.index;
-console.dir('es_index: ' + _index);
+var index;
+if (argv.index !== undefined)  index = argv.index;
+else
+    index = (process.env.HSPSDB_INDEX || 'hspsdb-test');
+console.dir('index: ' + index);
 
-var _type = "xml2";  // Elasticsearch document type name for BLAST results
+var type = "xml2";  // Elasticsearch document type name for BLAST results
 
 router.get('/esr/retrieve-blast-output', function (req, res)
 {
     var query = req.query.q;
-    
+
     client.search({
         requestTimeout: 14000,
-        index: _index,
-        type: _type,
+        index: index,
+        type: type,
         body: {
             "query": {
                 query_string:{
@@ -48,8 +52,8 @@ router.get('/esr/retrieve-blast-output', function (req, res)
 router.post('/esr/_search', function (req, res)
 {
     var esreq = {
-        index: _index,
-        //type: _type,
+        index: index,
+        type: type,
         body: req.body,
         size: (req.query.size!==undefined ? req.query.size : 5),
         from: (req.query.from!==undefined ? req.query.from : 0)
@@ -69,8 +73,8 @@ router.post('/esr/_suggest', function (req, res)
 {
 
     var esreq = {
-        index: _index,
-        //type: _type,
+        index: index,
+        type: type,
         body: JSON.parse(JSON.stringify(req.body))
     };
 
@@ -88,7 +92,7 @@ router.post('/esr/_suggest', function (req, res)
 router.get('/esr/ncbiimport', function (req, res)
 {
     var jobid = req.query.jobid;
-    ncbiimport(jobid, "JSON2_S", res);    
+    ncbiimport(jobid, "JSON2_S", res);
 });
 
 
@@ -111,12 +115,12 @@ function ncbiimport(jobid, resulttype, httpResponse) {
         if(res.BlastOutput2 !== undefined){
             console.log('indexing BLAST results for NCBI job ' + jobid);
             client.index({
-                index: _index,
-                type: "xml2",
+                index: index,
+                type: type,
                 id: jobid,
                 body: res
             });
-            client.indices.refresh({index: _index});
+            client.indices.refresh({index: index});
             httpResponse.send('NCBI import request was successful: ');
         }
         else
