@@ -74,35 +74,55 @@ var qt = {
     }};
 
 
-function addAttrFilter(must)
+function attrSelections()
 {
-    var i, e, qt_, r, p;
+    var categories = {}, category, fval;
+//todo: in case of URL specified attributes we do not have existing check boxes yet
+    $('input:checked[name=topic]').next().each(function(i, a)
+    {
+        category = $(a).attr('ffl');
+        fval = $(a).attr('fval');
+        if (!categories.hasOwnProperty(category)) {
+            categories[category] = [];
+        }
+        categories[category].push(fval);
+    });
+
+    return categories;
+}
+
+
+function addAttrFilter(must){
+    var selections = attrSelections();
+    var i, qt_, r, p, path_, v, n;
     var l = $("input:checked[name=topic]");
     var attrfilters = new Map();
 
-    for(i=0; i<l.length; i++)
+    for(path_ in selections)
     {
-        e = l[i];
-        var path_ = $(e).attr("path");
-        var v = $(e).val();
-        var a = path_.split(",");
-        var mpq_ = jQuery.extend(true, {}, mpq);
-        r = a[0];
-        if(r === 'hsps' && a[2] == 'hsps2hits')
-            p = qpaths['bhits'];
-        else
-            p = qpaths[r];
-
-        mpq_.match_phrase[p + "." + a[a.length-1]] = v;
-
-        if(attrfilters.get(r) === undefined)
-            qt_ = jQuery.extend(true, {}, qt);
-        else
-            qt_ = attrfilters.get(r);
-
-        qt_.nested.path = p;
-        qt_.nested.query.bool.should.push(mpq_);
-        attrfilters.set(a[0], qt_);
+        var val = selections[path_];
+        n = val.length;
+        for(i = 0; i < n; i++){
+            v = val[i];
+            var a = path_.split(",");
+            var mpq_ = jQuery.extend(true, {}, mpq);
+            r = a[0];
+            if(r === 'hsps' && a[2] == 'hsps2hits')
+                p = qpaths['bhits'];
+            else
+                p = qpaths[r];
+            
+            mpq_.match_phrase[p + "." + a[a.length-1]] = v;
+            
+            if(attrfilters.get(r) === undefined)
+                qt_ = jQuery.extend(true, {}, qt);
+            else
+                qt_ = attrfilters.get(r);
+            
+            qt_.nested.path = p;
+            qt_.nested.query.bool.should.push(mpq_);
+            attrfilters.set(a[0], qt_);
+        }
     };
 
     attrfilters.forEach(function(e,i){

@@ -110,7 +110,13 @@ function documentready()
 
     if($("#q").size() === 1){
         var query = getURLParam("q");
-        
+        var attrfilter = getURLParam("attrfilter");
+        var attrfilterval = getURLParam("attrfilterval");
+        if(attrfilter !== undefined && attrfilterval !== undefined)
+        {
+            addSelectedFilterEntry(attrfilter, attrfilterval);
+        }
+ 
         if(query === undefined)
         {
             //var page = getURLParam("page");
@@ -133,13 +139,6 @@ function documentready()
             executeFormQuery(false);
         }
     });
-
-    var attrfilter = getURLParam("attrfilter");
-    var attrfilterval = getURLParam("attrfilterval");
-    if(attrfilter!==undefined)
-    {
-        addAttrFilterCheckbox(attrfilter, attrfilterval);
-    }
 };
 
 

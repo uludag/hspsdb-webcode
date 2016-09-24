@@ -2,7 +2,6 @@
 
 function getQueryRequest_aggs()
 {
-    var emax = $("#emax").val();
     var bucketsize = 100;
 
     var aggsq = {
