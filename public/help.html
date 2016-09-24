@@ -8,33 +8,32 @@
     <script type="text/javascript" src="js/docready_es.js"></script>
 </head>
 <body>
-    
-    <h1>How to index your BLAST results</h1>        
-    <p>If you decide to index your BLAST results you can use scripts
-        provided by the 
-        <a href="https://github.com/uludag/hspsdb-indexer">hspsdb-indexer</a> project.
+    <br>
+    <h1>Indexing your BLAST results</h1>        
+    <p> 
+        <a href="https://github.com/uludag/hspsdb-indexer">HSPs-db-indexer</a> project
+        can help you with initializing an Elasticsearch index
+        and indexing your BLAST results.
     </p>
-    <h1>How to install HSPs-db web interface</h1>
+    <h1>Installing HSPs-db web interface</h1>
     <p>
         Source code of HSPs-db web interface is maintained by the
-        <a href="https://github.com/uludag/hspsdb-webcode">hspsdb-webcode</a> project that
-        could be used to build websites for indexed BLAST results.
+        <a href="https://github.com/uludag/hspsdb-webcode">HSPs-db-webcode</a> project
+        that could be used to build web interfaces for indexed BLAST results.
     </p>
-        
-    <h1>Import your BLAST results into this website/database</h1>
+    <br>
+    <h1>Import/index BLAST results direct from NCBI servers</h1>
+    Enter here request id of your NCBI BLAST searches to import the search results
+    to the Elasticsearch server current website is connected to.
     <form id="ncbiimport">
         <div class="row">
-            Import results from NCBI BLAST server:
-            <input id="ncbijobid" title=
-                   "Enter here job-id of your NCBI BLAST searches to import the search results
-                   to the Elasticsearch server this website is connected to.
-                   ">
+            NCBI BLAST request id:
+            <input id="ncbijobid">
             <button id="import" type="submit"
                     >Import</button>
         </div>
         <p id='msg'></p>
     </form>
-        
         
 </body>
 </html>
