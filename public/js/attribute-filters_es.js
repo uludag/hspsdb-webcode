@@ -137,7 +137,7 @@ function attrFilterQuery(q, ff, a) {
 }
 
 
-var attvalsafe = /[\(\):34 \.]/g;
+var attvalsafe = /[\(\):34 \.\/]/g;
 
 // Adds an entry close to the Search box
 // that should allow deleting the selected attribute filters
