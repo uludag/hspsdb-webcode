@@ -1,19 +1,11 @@
-
 TODO Roadmap mix:
 ================
-
-- We do queries in result level, i.e. whether a whole BLAST result match the query.
-  We should however apply the filters and query terms to the inner elements
- (hits/hsps) and should return matching parts of the results rather than whole.
 
 - Pivot-table view; can we add more dimensions?
   Dynamic selection of default rows and columns
   Heatmap; higher scores should have stronger colors
 
-- When NCBI result import is successful, take the user directly to view it (Tanvir)
-
-- List selected filters together with options to remove them (as in FARNA)
-  Add more filters, hit-length, identities, maybe for all numeric attributes
+- Add more filters; gaps?, identities?, maybe all numeric attributes?
 
 - Should be possible to generate a sample database by a script that should
   run a set of searches on EMBL-EBI and NCBI BLAST servers?
@@ -22,16 +14,17 @@ TODO Roadmap mix:
 
 - New form for importing json/xml output files
 
-- Link for import scripts (indexer project)
-
 - Repeat/Run BLAST searches on EMBL-EBI/NCBI?
 
 - Should we have separate tabs for aggregation results and query results?
 
 - No need to retrieve sequences/alignments when constructing the Kablammo view?
 
-- Is it possible not to retrieve HSPs list in the first query?
+- When NCBI results import is successful, take the user directly to view it (Tanvir)
 
 - Taxonomy reports as in NCBI TaxBLAST reports (Tanvir)
+http://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=howlink
 
 - Circos views using https://github.com/nicgirault/circosJS/
+
+- Default results view: use colors to indicate how strong a match

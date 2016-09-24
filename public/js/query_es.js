@@ -70,8 +70,7 @@ var qt = {
         "path": "BlastOutput2.report.search_target",
         "query": {
             "bool": {
-                "should": []}},
-        "inner_hits": {"size":10}
+                "should": []}}
     }};
 
 
@@ -126,20 +125,25 @@ function getQueryRequest_query(query)
                     }}],
             filter: {
                 nested:{
-                    path:"BlastOutput2.report.results.search.hits.hsps",
+                    path:"BlastOutput2.report.results.search.hits",
                     query:{
-                        "bool": {
-                            "must":[]}}}
-            }
-        }
+                        nested:{
+                            path:"BlastOutput2.report.results.search.hits.hsps",
+                            query:{
+                                "bool": {
+                                    "must":[]}}}
+                    },
+                    "inner_hits": {
+                        "size": 100,
+                        "_source": [
+                            "*.accession"
+                        ]
+                    }}}}
     };
-    var m = q.bool.filter.nested.query.bool.must;
+    var m = q.bool.filter.nested.query.nested.query.bool.must;
     addEvalueFilter(m);
     addAlignLenFilter(m);
     addAttrFilter(q.bool.must);
-
-    //    if(q.bool.filter.nested.query.bool.must.length>0)
-    //        q["bool"].filter.nested["inner_hits"] = {size:400};
 
     return q;
 }
@@ -149,8 +153,7 @@ function getQueryRequest_QueryPlusAggs(query)
 {
     var q = getQueryRequest_query(query);
     var aggsq = getQueryRequest_aggs();
-    var source = ["*.program", "*.query_id", "*.query_title",
-        "*.db", "*.accession"];
+    var source = ["*.program", "*.query_id", "*.query_title", "*.db"];
     var queryrequest =
         "{\n"
         + "\"size\": 10,\n"

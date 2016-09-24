@@ -99,7 +99,8 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
     if(h._source.BlastOutput2[0] === undefined ){
         r = h._source.BlastOutput2.report;
         $("#tablescontainer").append(blastOutput2sLine(h._id, r, 1));
-        reportOutput(h._source.BlastOutput2);
+        reportOutput(h._source.BlastOutput2,
+        h.inner_hits["BlastOutput2.report.results.search.hits"]["hits"]["hits"]);
     }
     else {
         r = h._source.BlastOutput2[0].report;
@@ -108,33 +109,49 @@ function displayBlastOutput2(h) // each hit is one or more BlastOutput2
         n = h._source.BlastOutput2.length;
         if (n > maxSearches) n = maxSearches;
         for(i = 0; i < n; i++)
-            reportOutput(h._source.BlastOutput2[i]);
+            reportOutput(h._source.BlastOutput2[i],
+        h.inner_hits["BlastOutput2.report.results.search.hits"]["hits"]["hits"]);
     }
 }
 
 
-function describeSearchResult(r){
+function reportSearchResult(r, inner_hits){
     var i, h, n;
-    var s = r.results.search;
+    var search = r.results.search;
     var b = "<p class='bquery'><b>Query</b>: ";
-    b += shortQueryTitle(s.query_id, s.query_title);
-    n = s.hits.length;
+    b += shortQueryTitle(search.query_id, search.query_title);
+    n = inner_hits.length;
+    if(n == 0){
+        n = search.hits.length;
+        b += "</p><p style='margin-bottom:1px;'><b>"+n+"</b> matches";
+        if(n > maxHits)  { b += " (10 listed)"; n = maxHits; }
+    }
+    
     b += "</p><p style='margin-bottom:1px;'><b>"+n+"</b> matches";
-    if(n > maxHits)  { b += " (10 listed)"; n = maxHits; }
+    if(n > maxHits)  { n = maxHits; b += " (" + n + " listed)";}
     b += ":</p><p>";
-    for(i = 0; i < n; i++){
-        h = s.hits[i];
-        b += h.description[0].accession + " ";
-    };
+
+    if(inner_hits.length > 0){
+        for(i = 0; i < n; i++){
+            h = inner_hits[i];
+            b += h._source.description[0].accession + " ";
+        };
+    }
+    else {
+        for(i = 0; i < n; i++){
+            h = search.hits[i];
+            b += h.description[0].accession + " ";
+        };
+    }
     b += "</p>";
     return b;
 }
 
 
-function reportOutput(output)
+function reportOutput(output, inner_hits)
 {
     var r = output.report;
-    $("#tablescontainer").append(describeSearchResult(r));
+    $("#tablescontainer").append(reportSearchResult(r, inner_hits));
 //    if(searchqueryid.hits.taxid_count.buckets.length === 0)
 //        $("#tablescontainer div:last").append(
 //        "<p>no species info provided for the matched database entries</p>");
@@ -166,10 +183,10 @@ function displayReport(report, ihits, ptinput)
 {
     var bhits, hit_;
 
-    if(report!==undefined)
+    if(report !== undefined)
     {
-        if(ihits!==undefined
-            && ihits["BlastOutput2.report.results.search.hits"]!==undefined)
+        if(ihits !== undefined
+            && ihits["BlastOutput2.report.results.search.hits"] !== undefined)
         {
             bhits = ihits["BlastOutput2.report.results.search.hits"]
                 .hits.hits;
@@ -190,7 +207,7 @@ function displayReport(report, ihits, ptinput)
         var qlen = report.results.search.query_len;
         for (var j=0; j< bhits.length;j++)
         {
-            if(bhits[j]._source===undefined)
+            if(bhits[j]._source === undefined)
                 hit_ = bhits[j];
             else
                 hit_ = bhits[j]._source;
