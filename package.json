@@ -2,8 +2,12 @@
   "name": "hspsdb-webcode",
   "version": "0.1.0",
   "private": true,
+  "doc": [
+    "Use ES_SERVER env setting to specify Elasticsearch server URL",
+    "Use HSPSDB_INDEX env setting to specify Elasticsearch index name"],
   "scripts": {
-    "start": "node bin\/www  --es_server http://localhost:9200/"
+    "start_ex": "node bin/www  --es_server http://localhost:9200/ --index hspsdb-tests",
+    "start": "node bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

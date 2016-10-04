@@ -2,7 +2,7 @@
 
 HSPs-db project develops indexing tools and data-mining interfaces for
 NCBI-BLAST sequence similarity search results.
-Everyday researchers all over the world run millions of BLAST sequence similarity
+Everyday researchers in many parts of the world run millions of BLAST sequence similarity
 searches; aim here is to prepare tools to make more sense of these search results.
 Latest version of BLAST software have improved outputs (xml2 project)
 which makes our task easier.
