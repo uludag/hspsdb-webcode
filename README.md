@@ -16,9 +16,8 @@ We have open eye for Solr and Mongodb.
   [npm](https://www.npmjs.com/) installed
 
 * You should have indexed your BLAST results using the mappings we have
-  as part of the [HSPs-db indexer]
-  (https://github.com/uludag/hspsdb-indexer) project
-
+  as part of the [HSPs-db indexer](https://github.com/uludag/hspsdb-indexer)
+  project
 
 * Clone this repository
 
