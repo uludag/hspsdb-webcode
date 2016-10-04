@@ -7,7 +7,8 @@
     "Use HSPSDB_INDEX env setting to specify Elasticsearch index name"],
   "scripts": {
     "start_ex": "node bin/www  --es_server http://localhost:9200/ --index hspsdb-tests",
-    "start": "node bin/www"
+    "start": "node bin/www",
+    "test": "node -v 'we have not implemented tests yet'"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
