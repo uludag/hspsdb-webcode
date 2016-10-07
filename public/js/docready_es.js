@@ -128,7 +128,13 @@ function documentready()
         
         $("#staticcontent").hide();
         $("#searchresults").show();
-        executeQueryDisplayResults(server, query, false);
+        var facets = {};
+        if(attrfilter !== undefined && attrfilterval !== undefined)
+        {
+            facets[attrfilter] = [];
+            facets[attrfilter].push(attrfilterval);
+        }
+        executeQueryDisplayResults(server, query, false, facets);
     }
     $("#startfrom, #rows").keydown(changeSetOfResultsDisplayed);
 
@@ -250,5 +256,6 @@ function getURLParam(name)
 function executeFormQuery(prevnextq)
 {
     var query = $("#q").val();
+    if(query === undefined)  query="*";
     executeQueryDisplayResults(server, query, prevnextq);
 }

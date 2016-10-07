@@ -21,19 +21,19 @@ function displayQueryResults(result, nextprevq, query)
         else $("#navigation").hide();
         $("#nresults").html(
             "Number of ncbi-blast-search results found: "
-            + "<span style='color:#333;'>"+nhits
+            + "<span style='color:#333;'>" + nhits
             + "</span>"
 
             +"&nbsp;&nbsp;&nbsp;&nbsp;Number of database entries matched in these results: "
-            + "<span style='color:#333;'>"+aggs.hsps.filteredhsps.hsps2hits.doc_count
+            + "<span style='color:#333;'>" + aggs.hsps.filteredhsps.hsps2hits.doc_count
             + "</span>"
             +(        aggs.hsps===undefined ? "" :
             ("&nbsp;&nbsp;&nbsp;&nbsp;Number of HSPs: "
-            + "<span style='color:#333;'>"+aggs.hsps.filteredhsps.doc_count
+            + "<span style='color:#333;'>" + aggs.hsps.filteredhsps.doc_count
             + "</span>")
             )
             +"<span style='padding-left:1em'>Query was: </span>"
-            +"<span style='color:#333;'>"+query+"</span>"
+            +"<span style='color:#333;'>" + query + "</span>"
             );
         $("#notifications").text("");
         $("#rows").val(esqhits.length);
@@ -48,7 +48,7 @@ function displayQueryResults(result, nextprevq, query)
         $("#nresults").text("");
         $("#notifications").html("No results found."
                 +"<span style='color:#f77709; padding-left:1em'>query was: </span>"
-                +"<span style='color:#333;'>"+query+"</span>"
+                +"<span style='color:#333;'>" + query + "</span>"
                 );
         $("#navigation").hide();
     }
@@ -79,9 +79,9 @@ function blastOutput2sLine(id, r, nSearches) {
 function shortQueryTitle(query_id, query_title)
 {
     var t = query_id + ": ";
-    if(query_title.length > 50)
+    if(query_title.length > 60)
     {
-        t += query_title.substring(0, 46);
+        t += query_title.substring(0, 56);
         t += " <a href='#' title='" + query_title + "'>...</a>";
     }
     else
@@ -126,7 +126,7 @@ function reportSearchResult(r, inner_hits){
         b += "</p><p style='margin-bottom:1px;'><b>"+n+"</b> matches";
         if(n > maxHits)  { b += " (10 listed)"; n = maxHits; }
     }
-    
+
     b += "</p><p style='margin-bottom:1px;'><b>"+n+"</b> matches";
     if(n > maxHits)  { n = maxHits; b += " (" + n + " listed)";}
     b += ":</p><p>";

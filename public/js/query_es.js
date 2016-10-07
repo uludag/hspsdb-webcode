@@ -8,7 +8,7 @@ var qpaths={
 };
 
 
-function executeQueryDisplayResults(server, querywof, nextprevq)
+function executeQueryDisplayResults(server, querywof, nextprevq, facets)
 {
     var startfrom = $("#startfrom").val();
     //var rows = $("#rows").val();
@@ -23,19 +23,34 @@ function executeQueryDisplayResults(server, querywof, nextprevq)
         qurl += "from=0";
 
     qurl += "&size=" + 5;
-
     $("#nresults").text("");
     $("tbody tr").remove();
-
-    var queryrequest = getQueryRequest_QueryPlusAggs(querywof);
+    
+    var queryrequest = getQueryRequest_QueryPlusAggs(querywof,
+            facets || attrSelections());
 
     $("#notifications").text("Querying '" + querywof + "'please wait ....");
     var query = $("#q").val();
 
     $.postJSON(qurl, queryrequest, function(r){
-        processQueryResults(r, query, nextprevq);}).fail(queryFailed);
+        processQueryResults(r, query, nextprevq);
+        if(facets !== undefined) attrFilterQueryTab(facets);
+    }).fail(queryFailed);
+    
 };
 
+// If the attribute filter query was called by URL
+// here make sure that facet checkbox is checked after the query made
+function attrFilterQueryTab(facets)
+{
+    var fval;
+    var ffl = getURLParam("attrfilter");
+    if(facets[ffl] !== undefined)
+        fval = facets[ffl][0];
+    var cb = $("input[value=" + fval + "]");
+    if( !$(cb).is(":checked") )
+        $(cb).prop("checked", "checked");
+}
 
 function queryFailed(errmsg)
 {
@@ -77,7 +92,7 @@ var qt = {
 function attrSelections()
 {
     var categories = {}, category, fval;
-//todo: in case of URL specified attributes we do not have existing check boxes yet
+
     $('input:checked[name=topic]').next().each(function(i, a)
     {
         category = $(a).attr('ffl');
@@ -92,14 +107,11 @@ function attrSelections()
 }
 
 
-function addAttrFilter(must){
-    var selections = attrSelections();
+function addAttrFilter(must, selections) {
     var i, qt_, r, p, path_, v, n;
-    var l = $("input:checked[name=topic]");
     var attrfilters = new Map();
 
-    for(path_ in selections)
-    {
+    for(path_ in selections) {
         var val = selections[path_];
         n = val.length;
         for(i = 0; i < n; i++){
@@ -133,7 +145,7 @@ function addAttrFilter(must){
 
 // 'query' section of the query request
 
-function getQueryRequest_query(query)
+function getQueryRequest_query(query, facets)
 {
     var q={
         bool:{
@@ -163,16 +175,15 @@ function getQueryRequest_query(query)
     var m = q.bool.filter.nested.query.nested.query.bool.must;
     addEvalueFilter(m);
     addAlignLenFilter(m);
-    addAttrFilter(q.bool.must);
-
+    addAttrFilter(q.bool.must, facets);
     return q;
 }
 
 
-function getQueryRequest_QueryPlusAggs(query)
+function getQueryRequest_QueryPlusAggs(query, facets)
 {
-    var q = getQueryRequest_query(query);
-    var aggsq = getQueryRequest_aggs();
+    var q = getQueryRequest_query(query, facets);
+    var aggsq = getQueryRequest_aggs(facets);
     var source = ["*.program", "*.query_id", "*.query_title", "*.db"];
     var queryrequest =
         "{\n"

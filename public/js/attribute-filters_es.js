@@ -132,7 +132,7 @@ function attrFilterQuery(q, ff, a) {
     var fq;
     fq = "?q=" + (q.length === 0 ? "*" :
         encodeURIComponent(q).replace("'","%27"));
-    fq += " AND "+ff+":\""+a+"\"";
+    fq += "&attrfilter=" + ff + "&attrfilterval=" + a;
     return fq;
 }
 
@@ -175,7 +175,7 @@ function attrFilterQuerySubmit(q, a)
     var ffl = $(a).attr("ffl");
     var fval = $(a).attr("fval");
     var cb = $(a).siblings().first();
-
+    
     if( !$(cb).is(":checked") )
         $(cb).prop("checked", "checked");
 
