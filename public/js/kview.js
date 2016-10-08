@@ -131,9 +131,7 @@ function json2_to_kablammojson(json2)
             h.hsps[j].subject_frame =
                 hsp.query_strand === undefined || hsp.hit_strand === "Plus" ? 1 : -1;
             h.hsps[j].alignment_length = h.hsps[j].align_len;
-            h.hsps[j].qcovhsp = 80;//todo????
             h.hsps[j].sseq = h.hsps[j].hseq;
-            h.hsps[j].normalized_bit_score =0.1;//todo
         }
         q.hits.push(h);
     }

@@ -7,18 +7,18 @@ TODO Roadmap mix:
 
 - Add more filters; gaps?, identities?, maybe all numeric attributes?
 
-- Should be possible to generate a sample database by a script that should
-  run a set of searches on EMBL-EBI and NCBI BLAST servers?
+- Improve hspsdb-indexer script that generates sample database
 
 - Visual output similar to EBI SSS result pages? sequence/subject match
 
 - New form for importing json/xml output files
+  Write test for the import function, import from a json file first
 
 - Repeat/Run BLAST searches on EMBL-EBI/NCBI?
 
 - Should we have separate tabs for aggregation results and query results?
 
-- No need to retrieve sequences/alignments when constructing the Kablammo view?
+- Heroku test app with Bonsai Elasticsearch service for a larger sample db
 
 - When NCBI results import is successful, take the user directly to view it (Tanvir)
 
