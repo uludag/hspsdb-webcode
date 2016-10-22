@@ -1,27 +1,15 @@
 
 var ffl =[
-    ["search", "query_id"],
-    ["search_target","db"],
-    ["report", "program"],
-    ["hsps", "filteredhsps", "hsps2hits", "description.sciname"],
-    ["hsps", "filteredhsps", "hsps2hits", "description.accession"],
-    ["hsps", "filteredhsps", "hseq"]
+    ["cigar"],
+    ["read"]
 ];
 var fflnames =[
-    "Query sequences",
-    "Sequence databases",
-    "Search type/program",
-    "Species/sequence-source",
-    "Matched sequences/entries",
-    "Sequence segments matched"
+    "Cigar sequences",
+    "Read sequences"
 ];
 var units =[
-    "#searches",
-    "#matches",
-    "#matches",
-    "#matches",
-    "#matches",
-    "#HSP matches"
+    "#??",
+    "#??"
 ];
 
 
@@ -175,7 +163,7 @@ function attrFilterQuerySubmit(q, a)
     var ffl = $(a).attr("ffl");
     var fval = $(a).attr("fval");
     var cb = $(a).siblings().first();
-    
+
     if( !$(cb).is(":checked") )
         $(cb).prop("checked", "checked");
 

@@ -25,7 +25,7 @@ function executeQueryDisplayResults(server, querywof, nextprevq, facets)
     qurl += "&size=" + 5;
     $("#nresults").text("");
     $("tbody tr").remove();
-    
+
     var queryrequest = getQueryRequest_QueryPlusAggs(querywof,
             facets || attrSelections());
 
@@ -36,7 +36,7 @@ function executeQueryDisplayResults(server, querywof, nextprevq, facets)
         processQueryResults(r, query, nextprevq);
         if(facets !== undefined) attrFilterQueryTab(facets);
     }).fail(queryFailed);
-    
+
 };
 
 // If the attribute filter query was called by URL
@@ -67,9 +67,9 @@ function processQueryResults(result, query, nextprevq)
 
     if(result.hits.hits.length > 0)
     {
-        $("#pivottabletab").show();
-        displayResultsInPivotTable(ptinput);
-        ssview(result.hits.hits);
+        //$("#pivottabletab").show();
+        //displayResultsInPivotTable(ptinput);
+        //ssview(result.hits.hits);
     }
 }
 
@@ -154,7 +154,7 @@ function getQueryRequest_query(query, facets)
                         default_field: "_all",
                         default_operator: "AND",
                         query: query
-                    }}],
+                    }}]/*,
             filter: {
                 nested:{
                     path:"BlastOutput2.report.results.search.hits",
@@ -170,12 +170,12 @@ function getQueryRequest_query(query, facets)
                         "_source": [
                             "*.accession"
                         ]
-                    }}}}
+                    }}} */}
     };
-    var m = q.bool.filter.nested.query.nested.query.bool.must;
-    addEvalueFilter(m);
-    addAlignLenFilter(m);
-    addAttrFilter(q.bool.must, facets);
+    //var m = q.bool.filter.nested.query.nested.query.bool.must;
+    //addEvalueFilter(m);
+    //addAlignLenFilter(m);
+    //addAttrFilter(q.bool.must, facets);
     return q;
 }
 
@@ -184,12 +184,13 @@ function getQueryRequest_QueryPlusAggs(query, facets)
 {
     var q = getQueryRequest_query(query, facets);
     var aggsq = getQueryRequest_aggs(facets);
-    var source = ["*.program", "*.query_id", "*.query_title", "*.db"];
+    var source = ["*"];
     var queryrequest =
         "{\n"
-        + "\"size\": 10,\n"
+        + "\"size\": 0,\n"
         + "\"_source\": " + JSON.stringify(source, null, ' ') + ",\n"
-        + "\"query\": " + JSON.stringify(q, null, ' ') + ",\n"
+        + "\"query\": " + JSON.stringify(q, null, ' ')
+        + ",\n"
         + "\"aggs\": " + JSON.stringify(aggsq, null, ' ') + "\n"
         + "}";
     return queryrequest;

@@ -2,84 +2,26 @@
 
 function getQueryRequest_aggs()
 {
-    var bucketsize = 100;
+    //var bucketsize = 100;
 
     var aggsq = {
-        "search_target" : {
-            nested : {
-                path : "BlastOutput2.report.search_target"
-            },
-            "aggs": {
-                db:{
-                    terms : {
-                        field : "BlastOutput2.report.search_target.db.raw"
-                    }
-                }}
-        },
-        "report" : {
-            nested : {
-                path : "BlastOutput2.report"
-            },
-            "aggs": {
-                program:{
-                    terms : {
-                        field : "BlastOutput2.report.program"
-                    }
-                }}
-        },
-        "hsps": {
-            "nested": {
-                "path": "BlastOutput2.report.results.search.hits.hsps"
-            },        
-            "aggs": {
-                "filteredhsps": {
-                    "filter": {
-                        "bool": {"must":[]
-                        }
-                    },
-                    "aggs":{"hsps2hits":{
-                            reverse_nested : {
-                                path : "BlastOutput2.report.results.search.hits"
-                            },
-                            "aggs": {
-                                "description.sciname":{
-                                    "terms" : {
-                                        "size": bucketsize,
-                                        "field" :
-                                                "BlastOutput2.report.results.search.hits.description.sciname.raw"
-                                    }
-                                },
-                                "description.accession":{
-                                    "terms" : {
-                                        "size": bucketsize,
-                                        "field" :
-                                                "BlastOutput2.report.results.search.hits.description.accession"
-                                    }
-                                },
-                                "taxid_count":{
-                                    "terms" : {
-                                        "field" :
-                                                "BlastOutput2.report.results.search.hits.description.taxid"
-                                    }
-                                }
-                            }},
-                        
-                        "hseq":{
-                            "terms" : {
-                                "field" : "BlastOutput2.report.results.search.hits.hsps.hseq"
-                            }
-                        }
-                        
-                    }
-                }
-            }
-        },
-        "search": aggsForMainResultsView().aggs.search
+        "file":{
+            "terms" : {
+                "field" : "filename"
+            }},
+        "cigar":{
+            "terms" : {
+                "field" : "cigarString"
+            }},
+        "read":{
+            "terms" : {
+                "field" : "readString"
+            }}
     };
 
-    var m = aggsq.hsps.aggs.filteredhsps.filter.bool.must;
-    addEvalueFilter(m);
-    addAlignLenFilter(m);
+    //var m = aggsq.hsps.aggs.filteredhsps.filter.bool.must;
+    //addEvalueFilter(m);
+    //addAlignLenFilter(m);
     return aggsq;
 }
 
