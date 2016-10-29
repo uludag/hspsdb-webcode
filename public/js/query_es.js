@@ -1,10 +1,7 @@
 // query paths for facet fields defined in attribute-filters.js
 var qpaths={
-    search: "BlastOutput2.report.results.search",
-    search_target: "BlastOutput2.report.search_target",
-    report: "BlastOutput2.report",
-    bhits: "BlastOutput2.report.results.search.hits",
-    hsps: "BlastOutput2.report.results.search.hits.hsps"
+    cigar: "cigarString",
+    read: "readString"
 };
 
 
@@ -74,21 +71,6 @@ function processQueryResults(result, query, nextprevq)
 }
 
 
-var mpq =                    {
-    "match_phrase": {
-        //"BlastOutput2.report.search_target.db": "swissprot"
-    }
-};
-
-var qt = {
-    "nested": {
-        "path": "BlastOutput2.report.search_target",
-        "query": {
-            "bool": {
-                "should": []}}
-    }};
-
-
 function attrSelections()
 {
     var categories = {}, category, fval;
@@ -106,6 +88,8 @@ function attrSelections()
     return categories;
 }
 
+var mpq = {"match_phrase": {}};
+var qt = {"bool": {"should": []}};
 
 function addAttrFilter(must, selections) {
     var i, qt_, r, p, path_, v, n;
@@ -119,20 +103,16 @@ function addAttrFilter(must, selections) {
             var a = path_.split(",");
             var mpq_ = jQuery.extend(true, {}, mpq);
             r = a[0];
-            if(r === 'hsps' && a[2] == 'hsps2hits')
-                p = qpaths['bhits'];
-            else
-                p = qpaths[r];
+            p = qpaths[r];
             
-            mpq_.match_phrase[p + "." + a[a.length-1]] = v;
+            mpq_.match_phrase[p] = v;
             
             if(attrfilters.get(r) === undefined)
                 qt_ = jQuery.extend(true, {}, qt);
             else
                 qt_ = attrfilters.get(r);
             
-            qt_.nested.path = p;
-            qt_.nested.query.bool.should.push(mpq_);
+            qt_.bool.should.push(mpq_);
             attrfilters.set(a[0], qt_);
         }
     };
@@ -175,7 +155,7 @@ function getQueryRequest_query(query, facets)
     //var m = q.bool.filter.nested.query.nested.query.bool.must;
     //addEvalueFilter(m);
     //addAlignLenFilter(m);
-    //addAttrFilter(q.bool.must, facets);
+    addAttrFilter(q.bool.must, facets);
     return q;
 }
 
