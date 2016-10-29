@@ -55,7 +55,7 @@ function displayQueryResults(result, nextprevq, query)
 function displaySAMfile(samfile, r, nSearches) {
     var file = samfile.key;
     var l = "<p class='bresult'>"
-        + "<a href='?q=_id:" + file + "'>" + file + "</a> ";
+        + "<a href='?q=filename:\"" + file + "\"'>" + file + "</a> ";
 
     l += "(<a href=/esr/retrieve-blast-output?q=" + file + ">json output</a>)"
         + "(TODO:link/full result view)"
