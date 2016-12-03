@@ -29,7 +29,7 @@ function getEntryQueryRequest(id)
     var q = {
         "query": {"term": { "_id":  encodeURIComponent(id)}},
         "_source": {
-            "exclude": [ "*.qseq", "*.hseq", "*.midline" ]
+            "excludes": [ "*.qseq", "*.hseq", "*.midline" ]
         }
     };
 

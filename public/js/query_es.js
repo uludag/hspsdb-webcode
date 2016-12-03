@@ -166,10 +166,7 @@ function getQueryRequest_query(query, facets)
                                     "must":[]}}}
                     },
                     "inner_hits": {
-                        "size": 100,
-                        "_source": [
-                            "*.accession"
-                        ]
+                        "size": 100                        
                     }}}}
     };
     var m = q.bool.filter.nested.query.nested.query.bool.must;
