@@ -23,6 +23,21 @@ else
     index = (process.env.HSPSDB_INDEX || 'hspsdb-test');
 console.dir('index: ' + index);
 
+client.cat.indices({ index:index }, function (err, r) {
+    if (err === undefined)
+    {
+        if (r.length>5 && r.startsWith("green") && r.includes("open"))
+            console.log("Index " + index + " is open and available");
+        else {
+            console.log("Check index status: " + r);
+        }
+    }
+    else{
+        console.log(err.message);
+        process.exit(1);
+    }
+});
+
 var type = "xml2";  // Elasticsearch document type name for BLAST results
 
 router.get('/esr/retrieve-blast-output', function (req, res)
