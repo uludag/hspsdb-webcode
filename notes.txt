@@ -1,13 +1,15 @@
 TODO Roadmap mix:
 ================
 
-- Pivot-table view; can we add more dimensions?
-  Dynamic selection of default rows and columns
-  Heatmap; higher scores should have stronger colors
 
-- Add more filters; gaps?, identities?, maybe all numeric attributes?
+- Pivot-table view;
+  - Better/more dimensions?
+  - Dynamic selection of default rows and columns based on query results
+  - Heatmap; higher scores should have stronger colors
 
-- Improve hspsdb-indexer script that generates sample database
+- Add more filters; gaps?, identities?, maybe for all numeric attributes?
+
+- Improve hspsdb-indexer script that generates the sample database
 
 - Visual output similar to EBI SSS result pages? sequence/subject match
 

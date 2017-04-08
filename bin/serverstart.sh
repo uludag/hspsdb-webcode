@@ -40,7 +40,11 @@ fi
 if [ "x$index" = "x" ]; then
     index='hspsdb-test';
 fi
+if [ "x$PORT" = "x" ]; then
+    export PORT=3000;
+fi
+
 echo "Elasticsearch server URL: ${es_server}"
 echo "HSPs-db Elasticsearch index name: ${index}"
-nohup node ./bin/www --es_server=$es_server --index=$index >& server.log &
-echo "HSPs-db web server started at http://localhost:${PORT}";
+echo "HSPs-db web server URL: http://localhost:${PORT}";
+node ./bin/www --es_server=$es_server --index=$index |& tee server.log

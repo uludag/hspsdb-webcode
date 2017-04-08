@@ -27,6 +27,10 @@ We have open eye for Solr and Mongodb.
   script and run the script from project root folder.
   HSPs-db web interface should now be accessible from the port you selected
 
+You can see development version of HSPS-db web interface on a sample
+set of BLAST results by visiting the
+[test server](http://hspsdb-test.herokuapp.com/) we maintain
+
 ## License
 
 Copyright (c) King Abdullah University of Science and Technology, SA
