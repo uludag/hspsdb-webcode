@@ -23,7 +23,6 @@ else
     index = (process.env.HSPSDB_INDEX || 'hspsdb-test');
 console.dir('index: ' + index);
 
-try{
 client.cat.indices({ index:index }, function (err, r) {
     if (err === undefined)
     {
@@ -34,14 +33,12 @@ client.cat.indices({ index:index }, function (err, r) {
         }
     }
     else{
-        console.log(err.message);
-        process.exit(1);
+        console.error("Error while checking Elasticsearch index exists:"
+                + err.message);
+        if (err.message.indexOf("No feature for name [/_cat/indices/") === -1)
+            process.exit(1);
     }
 });
-}
-catch(e){
-    console.error("Error while checking Elasticsearch index exist: " + e);
-}
 
 var type = "xml2";  // Elasticsearch document type name for BLAST results
 
