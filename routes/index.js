@@ -23,6 +23,7 @@ else
     index = (process.env.HSPSDB_INDEX || 'hspsdb-test');
 console.dir('index: ' + index);
 
+try{
 client.cat.indices({ index:index }, function (err, r) {
     if (err === undefined)
     {
@@ -37,6 +38,10 @@ client.cat.indices({ index:index }, function (err, r) {
         process.exit(1);
     }
 });
+}
+catch(e){
+    console.error("Error while checking Elasticsearch index exist: " + e);
+}
 
 var type = "xml2";  // Elasticsearch document type name for BLAST results
 
