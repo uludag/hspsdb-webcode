@@ -61,7 +61,8 @@ router.get('/esr/retrieve-blast-output', function (req, res)
         res.status(200).send(JSON.stringify(resp, null, ' '));
     }, function (err) {
         console.trace(err.message);
-        res.render('retrieve-blast-output failed:', {response: err.message});
+        res.render('Error while retrieving BLAST output file:',
+        {response: err.message});
     });
 });
 

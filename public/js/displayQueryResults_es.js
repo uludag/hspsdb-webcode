@@ -24,7 +24,7 @@ function displayQueryResults(result, nextprevq, query)
             + "<span style='color:#333;'>" + nhits
             + "</span>"
 
-            +"&nbsp;&nbsp;&nbsp;&nbsp;Number of database entries matched in these results: "
+            +"&nbsp;&nbsp;&nbsp;&nbsp;Number of database entries matched: "
             + "<span style='color:#333;'>" + aggs.hsps.filteredhsps.hsps2hits.doc_count
             + "</span>"
             +(        aggs.hsps===undefined ? "" :
