@@ -16,9 +16,9 @@ function pt_prepareInputs(aggs)
     var row;
     var ptinput = new Array();
     var attnames = [
-        "Query sequence", "taxon",
-        "Sequence/entry matched",
-        "#HSPs", "score"];
+        "Query sequence", "Taxon",
+        "Entry matched",
+        "#HSPs", "Score"];
     ptinput.push(attnames);
 
     $.each(aggs.search.query_id.buckets, function(i, searchqueryid)
@@ -135,8 +135,6 @@ function geneviewAnnotsAggsQuery(bucketsize, sampletype)
 }
 
 
-
-
 function displayResultsInPivotTable(pivotinp)
 {
     var cont = "pivottablecont";
@@ -151,26 +149,24 @@ function displayResultsInPivotTable(pivotinp)
         
         $("#pttable").pivotUI(pivotinp,
         {
-            rows: ["taxon", "Query sequence", "Sequence/entry matched"],//Search database"],
+            rows: ["Taxon", "Query sequence", "Entry matched"],//Search database"],
             cols: [],
             rendererName: "Heatmap",
             aggregatorName: "Average",
-            vals: ["score"],
+            vals: ["Score"],
             menuLimit: 1000
         }, true
             );
         
         scatterChart(pivotinp);
-    }
-    
+    }    
 }
 
 
 function scatterChart(input)
 {
     $("#output").pivot(input, {
-        cols: ["#HSPs", "taxon"], rows: ["score"],
+        cols: ["#HSPs", "Taxon"], rows: ["Score"],
         renderer: $.pivotUtilities.c3_renderers["Scatter Chart"]
     });
 };
-
