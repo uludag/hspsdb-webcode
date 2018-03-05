@@ -1,24 +1,11 @@
-# HSPs-db
+# HSPs-db project webcode
 
-HSPs-db project develops indexing tools and data-mining interfaces for
-NCBI-BLAST sequence similarity search results.
-Everyday researchers in many parts of the world run countless number of
-BLAST sequence similarity searches;
-aim here is to prepare tools to make more sense of these search results.
-Latest version of BLAST software have improved outputs (xml2 project)
-which makes our task easier.
-
-We use Elasticsearch for indexing and storing BLAST results.
-We have open eye for Solr and Mongodb.
+Webcode for NCBI-BLAST search results, in json format, indexed with Elasticsearch. Scripts provided by the HSPs-db project should be used for indexing.
 
 ## Installation
 
-* Make sure you have [Node.js](https://nodejs.org/en/) and
+* Make sure [Node.js](https://nodejs.org/en/) and
   [npm](https://www.npmjs.com/) installed
-
-* You should have indexed your BLAST results using the mappings we have
-  as part of the [HSPs-db indexer](https://github.com/uludag/hspsdb-indexer)
-  project
 
 * Clone this repository
 
@@ -26,11 +13,15 @@ We have open eye for Solr and Mongodb.
 
 * Check configuration parameters in [bin/serverstart.sh](bin/serverstart.sh)
   script and run the script from project root folder.
-  HSPs-db web interface should now be accessible from the port you selected
+  HSPs-db web interface should be accessible from the port you selected
 
-You can see development version of HSPS-db web interface on a sample
-set of BLAST results by visiting the
-[test server](http://hspsdb-test.herokuapp.com/) we maintain
+* Index your BLAST results using the scripts provided
+  by the [HSPs-db indexer](https://github.com/uludag/hspsdb-indexer)
+  project
+
+Development version of the web interface is visible on a
+[test server](http://hspsdb-test.herokuapp.com/) with a sample
+set of BLAST search results
 
 ## License
 
